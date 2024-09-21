@@ -35,42 +35,43 @@ To develop this project, you must have the following installed on your computer:
     ```shell
     npm run build:shared
     ```
-    > If you IDE errors about the `'shared'` module not being found, you'll have to restart your Typescript service:
-    > - In Webstorm, click 'Typescript 5.4.5' in the bottom-right and then click 'Restart Typescript Service'.
-    > - In VS Code, Use <kbd>Cmd/Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, then type 'Restart TS Server' and hit <kbd>Enter</kbd>.
-3. Start the backend. If you make changes to the backend you'll have to kill it (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and restart
-    it with this command.
+    > If you get IDE errors about the `'shared'` module not being found, you'll have to restart your Typescript service:
+    > - In Webstorm, click ![Typescript 5.4.5](https://github.com/user-attachments/assets/153d729f-58c7-4e87-9e02-c617664f0161) in the bottom-right corner of the screen and then click 'Restart Typescript Service'.
+    > - In VS Code, use <kbd>Cmd/Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, then type 'Restart TS Server' and hit <kbd>Enter</kbd>. This only works if the editor is currently focused on a typescript file.
+3. Start the backend. *If you make changes to the backend you'll have to kill it (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and restart
+    it with this command.*
     ```shell
     npm run backend
     ```
-4. _In a new terminal_, start the frontend. Vite should auto-detect most changes and do a hot-reload for you so you don't
-    need to manually re-run this command when you make changes, but on occasion it may fail and you may need to manually
+4. **In a new terminal**, start the frontend. Vite should auto-detect most changes and do a hot-reload for you so you don't
+    need to manually re-run this command when you make changes, but on occasion it may fail and you'll need to manually
     re-run this.
     ```shell
    npm run frontend 
    ```
 
 ## Architecture
-This app uses a CS340-Tweeter-esque monorepo architecture with a Node.js/TS/Fastify backend, a React/TS/Vite frontend,
-and a third module for shared code, especially Types.
+This app uses a CS340-Tweeter-esque monorepo architecture with a backend module, a frontend module,
+and a third module for shared code, especially type definitions.
 
 ### Backend
-The backend (`server/`) a [Typescript](https://www.typescriptlang.org/) backend that uses the [Node.js](https://nodejs.org/en) v20
-javascript runtime and the [Fastify](https://fastify.dev/) web server framework (the industry-standard replacement for Express).
+The backend (`server/`) is written in [Typescript](https://www.typescriptlang.org/), uses the [Node.js](https://nodejs.org/en) v20
+javascript runtime, and relies on the [Fastify](https://fastify.dev/) web server framework (the industry-standard replacement for Express).
+This combination results in a speedy, modern, and type-safe backend.
 
 ### Frontend
 For the frontend (`web/`), we're using the same frontend setup that is used in CS340, which uses [Vite](https://vitejs.dev) as
 the development framework (building, hot-reload, etc.), [React](https://react.dev/) as the web framework library,
-and [Typescript](https://www.typescriptlang.org/) as the JS flavor.
+and [Typescript](https://www.typescriptlang.org/) again as the JS flavor.
 
 ### Type-safety
 Compile-time and development type safety will be enforced by Typescript. We also want run-time type-safety in the backend
-API calls, and this will be enforced by Fastify, the backend server framework. Fastify uses JSON Schema for defining
-the types of requests and responses, which is standard for RESTful APIs.
+API calls, and this will be enforced by Fastify. Fastify uses [JSON Schema](https://json-schema.org/) for defining
+the type definitions of requests and responses, which is standard for RESTful APIs.
 
 **Since we don't want to have to write our types in both Typescript and JSON Schema**, we will use [TypeBox](https://github.com/sinclairzx81/typebox#readme)
-which will export types in both formats so that we only have to write them once. We define these models in the 'shared'
+which will export definitions in both formats so that we only have to write them once. We define these models in the 'shared'
 directory (`shared/`), which the backend and frontend both import to access the type definitions.
 
-### Deployment
+## Deployment
 For now, we have no plans to deploy this anywhere. It can be run on a local computer for testing and presentation.
