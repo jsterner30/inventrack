@@ -62,17 +62,10 @@ export class UnauthorizedError extends Error {
     }
 }
 
-export class UnauthorizedClientError extends Error {
+export class UnauthenticatedError extends Error {
     constructor (message?: string) {
-        super(message ?? 'Client is Unauthorized to Make this Request')
-        Object.setPrototypeOf(this, UnauthorizedClientError.prototype)
-    }
-}
-
-export class UnauthenticatedClientError extends Error {
-    constructor (message?: string) {
-        super(message ?? 'Client is not Authenticated to Make this Request')
-        Object.setPrototypeOf(this, UnauthenticatedClientError.prototype)
+        super(message ?? 'Unauthenticated')
+        Object.setPrototypeOf(this, UnauthenticatedError.prototype)
     }
 }
 

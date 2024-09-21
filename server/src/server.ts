@@ -9,8 +9,7 @@ import {
     UnmodifiableError,
     DatabaseError,
     UnauthorizedError,
-    UnauthorizedClientError,
-    UnauthenticatedClientError,
+    UnauthenticatedError,
     sendBasicMessageResponse,
 } from './util/errors'
 import { logger, fastifyLogOpts } from './util/logger'
@@ -46,9 +45,9 @@ export default async function server (): Promise<FastifyInstance> {
         } else {
             if (error instanceof InvalidRequestError) {
                 await sendBasicMessageResponse(400, reply, error.message)
-            } else if (error instanceof UnauthenticatedClientError) {
+            } else if (error instanceof UnauthenticatedError) {
                 await sendBasicMessageResponse(401, reply, error.message)
-            } else if (error instanceof UnauthorizedError || error instanceof UnauthorizedClientError) {
+            } else if (error instanceof UnauthorizedError) {
                 await sendBasicMessageResponse(403, reply, error.message)
             } else if (error instanceof NotFoundError) {
                 await sendBasicMessageResponse(404, reply, error.message)

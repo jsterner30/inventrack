@@ -3,7 +3,7 @@ import { logger } from './util/logger'
 
 async function run (): Promise<void> {
     const app = await server()
-    await app?.listen({
+    await app.listen({
         host: '0.0.0.0',
         port: 8080
     })
