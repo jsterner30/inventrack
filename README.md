@@ -13,10 +13,11 @@
 To develop this project, you must have the following installed on your computer:
 - Node.js v20
   - We recommend using `nvm` or `nvm-windows` (Node Version Manager) to install this version of Node.js:
-    - To see if you have nvm installed, run `nvm --version`. If you don't, you can install it here:
+    - To see if you have nvm installed, run:
       ```shell
       nvm --version      
       ```
+    - If you don't have it installed, use these links to install it:
       - Windows: [https://github.com/coreybutler/nvm-windows](https://github.com/coreybutler/nvm-windows?tab=readme-ov-file#installation--upgrades)
       - Mac/Linux: [https://github.com/nvm-sh/nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating)
     - Once you have nvm working, run the following to install and switch to Node.js v20:
