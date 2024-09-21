@@ -1,4 +1,5 @@
-import { Type, TypeBoxTypeProvider, FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
+import { TypeBoxTypeProvider, FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
+import { AddResponseSchema, AddRequestSchema } from 'shared'
 
 // maybe use a generic argument for FastifyPluginAsync if we use options with fastify instance
 const add: FastifyPluginAsyncTypebox = async (fastifyApp, { }): Promise<void> => {
@@ -6,12 +7,9 @@ const add: FastifyPluginAsyncTypebox = async (fastifyApp, { }): Promise<void> =>
 
     fastify.get('/', {
         schema: {
-            querystring: Type.Object({
-                a: Type.Number(),
-                b: Type.Number()
-            }),
+            querystring: AddRequestSchema,
             response: {
-                200: Type.Object({result: Type.Number()})
+                200: AddResponseSchema
             }
         }
     }, async (request, reply) => {

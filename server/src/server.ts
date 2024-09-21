@@ -13,17 +13,12 @@ import {
     UnauthenticatedClientError,
     sendBasicMessageResponse,
 } from './util/errors'
-import { logger } from './util/logger'
-
-// const logger = l
+import { logger, fastifyLogOpts } from './util/logger'
 
 export default async function server (): Promise<FastifyInstance> {
-    console.log('11')
-    // const logger = mylogger()
     const fastify = Fastify({
-        logger: true
+        logger: fastifyLogOpts
     })
-    console.log('12')
 
     fastify.setValidatorCompiler(TypeBoxValidatorCompiler)
 
@@ -57,10 +52,10 @@ export default async function server (): Promise<FastifyInstance> {
             } else if (error instanceof ConflictError || error instanceof UnmodifiableError) {
                 await sendBasicMessageResponse(409, reply, error.message)
             } else if (error instanceof DatabaseError) {
-                fastify.log.error({err: error}, 'Critical database error')
+                logger.error({err: error}, 'Critical database error')
                 await sendBasicMessageResponse(500, reply, error.message)
             } else {
-                fastify.log.error({err: error}, 'Unknown internal server error')
+                logger.error({err: error}, 'Unknown internal server error')
                 await sendBasicMessageResponse(error.statusCode ?? 500, reply, error.message)
             }
         }
