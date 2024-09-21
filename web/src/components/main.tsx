@@ -13,7 +13,7 @@ export const Main = memo(() => {
         return response.text
     }, []);
 
-    const [addLoadState, doAdd] = useTriggerLoad<AddResponse>(async (abort) => {
+    const [addLoadState, doAdd] = useTriggerLoad<AddResponse | undefined>(async (abort) => {
         if (!client) {
             return
         }
