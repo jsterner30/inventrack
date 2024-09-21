@@ -8,12 +8,11 @@ export const Main = memo(() => {
     const client = useContext(ClientContext);
 
     const quoteLoad = useLoad(async (abort) => {
-        console.log('hehehehe')
         const response = await fetch('https://bible-api.com/john 3:16', { signal: abort }).then((res) => res.json());
         return response.text
     }, []);
 
-    const [_addLoadState, doAdd] = useTriggerLoad(async (abort) => {
+    const [addLoadState, doAdd] = useTriggerLoad(async (abort) => {
         if (!client) {
             return
         }
@@ -32,7 +31,11 @@ export const Main = memo(() => {
     return (
         <div>
             <blockquote>{quoteLoad.value}</blockquote>
-            <button onClick={() => { doAdd() }}>Add</button>
+            {addLoadState.pending ? (
+                <div>Adding...</div>
+            ) : (
+                <button onClick={() => { doAdd() }}>Add</button>
+            )}
         </div>
     );
 });
