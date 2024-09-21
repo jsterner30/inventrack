@@ -10,7 +10,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.33.12",
+    "@sinclair/typebox": "^0.33.12"
   },
   "devDependencies": {
     "rimraf": "^6.0.1",
