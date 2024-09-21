@@ -34,6 +34,9 @@ To develop this project, you must have the following installed on your computer:
     ```shell
     npm run build:shared
     ```
+    > If you IDE errors about the `'shared'` module not being found, you'll have to restart your Typescript service:
+    > - In Webstorm, click 'Typescript 5.4.5' in the bottom-right and then click 'Restart Typescript Service'.
+    > - In VS Code, Use <kbd>Cmd/Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, then type 'Restart TS Server' and hit <kbd>Enter</kbd>.
 3. Start the backend. If you make changes to the backend you'll have to kill it (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and restart
     it with this command.
     ```shell
