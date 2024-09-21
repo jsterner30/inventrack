@@ -1,27 +1,26 @@
-import {FastifyReply, FastifyRequest} from "fastify";
-import { Static, Type } from '@sinclair/typebox'
-import Fastify from 'fastify'
-import AutoLoad from '@fastify/autoload'
-import {join} from "path";
+import server from './server'
 
-const fastify = Fastify({
-    logger: true
-})
+async function run (): Promise<void> {
+    console.log('2')
 
-// This loads all plugins defined in routes
-// define your routes in one of these
-fastify.register(AutoLoad, { // eslint-disable-line @typescript-eslint/no-floating-promises
-    dir: join(__dirname, 'routes'),
-    // Don't attempt to autoload the report handlers
-    // options: {
-    //     // here's where you can pass in controllers, services or other shared classes to your routes
-    //     db
-    // }
-})
+    let app
+    try {
+    app = await server()
+    } catch (e) {
+        console.error(e)
+    }
+    console.log('3')
+    await app?.listen({
+        host: '0.0.0.0',
+        port: 8080
+    })
+}
 
-// todo add error handler
-
-await fastify.listen({
-    host: '0.0.0.0',
-    port: 8080
-})
+console.log('1')
+run()
+    .then(r => {})
+    .catch(async err => {
+        // logger.error({ err }, 'Error in running app')
+        // close any db stuff
+        process.exit()
+    })
