@@ -10,10 +10,9 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.33.12"
+    "@fastify/type-provider-typebox": "^5.0.0"
   },
   "devDependencies": {
-    "rimraf": "^6.0.1",
-    "typescript": "^5.0.2"
+    "rimraf": "^6.0.1"
   }
 }

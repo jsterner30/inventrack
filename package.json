@@ -5,7 +5,13 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "build": "npm run build --workspaces",
+    "build:shared": "npm run build --workspace=shared",
+    "build:backend": "npm run build --workspace=server",
+    "build:frontend": "npm run build --workspace=web",
+    "backend": "npm run dev --workspace=server",
+    "frontend": "npm run dev --workspace=web"
   },
   "author": "",
   "license": "ISC",
@@ -16,7 +22,8 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "eslint": "^8.57.0",
     "standard": "^17.0.0",
-    "ts-standard": "^12.0.1"
+    "ts-standard": "^12.0.1",
+    "typescript": "~5.4.5"
   },
   "peerDependencies": {
     "eslint-config-react-app": "^7.0.1"
@@ -25,5 +32,10 @@
     "env": {
       "node": true
     }
-  }
+  },
+  "engines": {
+    "npm": ">=10",
+    "node": ">=20"
+  },
+  "workspaces": ["shared","server","web"]
 }
