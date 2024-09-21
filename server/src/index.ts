@@ -1,45 +1,27 @@
-import Fastify, { Type } from 'fastify-typebox'
 import {FastifyReply, FastifyRequest} from "fastify";
+import { Static, Type } from '@sinclair/typebox'
+import Fastify from 'fastify'
+import AutoLoad from '@fastify/autoload'
+import {join} from "path";
 
-const fastify = Fastify()
+const fastify = Fastify({
+    logger: true
+})
 
-fastify.post('/users/:userId', {
-    schema: {
-        body: Type.Object({
-            x: Type.Number(),
-            y: Type.Number()
-        }),
-        response: {
-            200: Type.Object({
-                result: Type.Number()
-            })
-        }
-    }
-}, (request: FastifyRequest, reply: FastifyReply) => {
+// This loads all plugins defined in routes
+// define your routes in one of these
+fastify.register(AutoLoad, { // eslint-disable-line @typescript-eslint/no-floating-promises
+    dir: join(__dirname, 'routes'),
+    // Don't attempt to autoload the report handlers
+    // options: {
+    //     // here's where you can pass in controllers, services or other shared classes to your routes
+    //     db
+    // }
+})
 
-    // -------------------------------------
-    // Requests
-    // -------------------------------------
+// todo add error handler
 
-    // type Params = { userId: string }
-
-    const { userId } = request.params
-
-    // type Body = { x: number, y: number }
-
-    const { x, y } = request.body
-
-    // -------------------------------------
-    // Replies
-    // -------------------------------------
-
-    // type Response = { 200: { result: number } }
-
-    reply.send({ result: 100 })                // error: no status code specified
-
-    reply.status(400).send({ result: 42 })     // error: 400 status code not defined
-
-    reply.status(200).send({ result: '42' })   // error: result type is not number
-
-    reply.status(200).send({ result: x + y  })  // ok: !
+await fastify.listen({
+    host: '0.0.0.0',
+    port: 8080
 })

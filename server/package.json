@@ -26,8 +26,9 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^20.8.4",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.2",
-    "@types/node": "^20.8.4"
+    "typescript": "^5.4.2"
   }
 }
