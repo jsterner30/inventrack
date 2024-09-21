@@ -14,6 +14,7 @@ import {
     sendBasicMessageResponse,
 } from './util/errors'
 import { logger, fastifyLogOpts } from './util/logger'
+import cors from '@fastify/cors'
 
 export default async function server (): Promise<FastifyInstance> {
     const fastify = Fastify({
@@ -21,6 +22,8 @@ export default async function server (): Promise<FastifyInstance> {
     })
 
     fastify.setValidatorCompiler(TypeBoxValidatorCompiler)
+
+    fastify.register(cors)
 
     // This loads all plugins defined in routes
     // define your routes in one of these

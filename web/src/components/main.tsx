@@ -3,16 +3,17 @@ import {useLoad, useTriggerLoad} from '../util/load';
 import {useContext} from 'react';
 import {ClientContext} from '../context/client-context';
 import {add} from "../client/add";
+import { AddResponse } from 'shared'
 
 export const Main = memo(() => {
-    const client = useContext(ClientContext);
+    const client = useContext(ClientContext)
 
     const quoteLoad = useLoad(async (abort) => {
         const response = await fetch('https://bible-api.com/john 3:16', { signal: abort }).then((res) => res.json());
         return response.text
     }, []);
 
-    const [addLoadState, doAdd] = useTriggerLoad(async (abort) => {
+    const [addLoadState, doAdd] = useTriggerLoad<AddResponse>(async (abort) => {
         if (!client) {
             return
         }
@@ -35,6 +36,9 @@ export const Main = memo(() => {
                 <div>Adding...</div>
             ) : (
                 <button onClick={() => { doAdd() }}>Add</button>
+            )}
+            {addLoadState.value && (
+              <div>Hey, this is the value! {addLoadState.value?.result ?? 'undefined'}</div>
             )}
         </div>
     );
