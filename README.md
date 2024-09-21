@@ -32,7 +32,7 @@ To develop this project, you must have the following installed on your computer:
     ```
 2. Build the shared module. *Anytime you change the types, you will have to re-run this command.*
     ```shell
-    npm run build-shared
+    npm run build:shared
     ```
 3. Start the backend. If you make changes to the backend you'll have to kill it (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and restart
     it with this command.
@@ -51,11 +51,11 @@ This app uses a CS340-Tweeter-esque monorepo architecture with a Node.js/TS/Fast
 and a third module for shared code, especially Types.
 
 ### Backend
-This is a [Typescript](https://www.typescriptlang.org/) backend that uses the [Node.js](https://nodejs.org/en) v20
+The backend (`server/`) a [Typescript](https://www.typescriptlang.org/) backend that uses the [Node.js](https://nodejs.org/en) v20
 javascript runtime and the [Fastify](https://fastify.dev/) web server framework (the industry-standard replacement for Express).
 
 ### Frontend
-We're using the same frontend setup that is used in CS340, which uses [Vite](https://vitejs.dev) as
+For the frontend (`web/`), we're using the same frontend setup that is used in CS340, which uses [Vite](https://vitejs.dev) as
 the development framework (building, hot-reload, etc.), [React](https://react.dev/) as the web framework library,
 and [Typescript](https://www.typescriptlang.org/) as the JS flavor.
 
@@ -66,7 +66,7 @@ the types of requests and responses, which is standard for RESTful APIs.
 
 **Since we don't want to have to write our types in both Typescript and JSON Schema**, we will use [TypeBox](https://github.com/sinclairzx81/typebox#readme)
 which will export types in both formats so that we only have to write them once. We define these models in the 'shared'
-directory, which the backend and frontend both import to access the type definitions.
+directory (`shared/`), which the backend and frontend both import to access the type definitions.
 
 ### Deployment
 For now, we have no plans to deploy this anywhere. It can be run on a local computer for testing and presentation.
