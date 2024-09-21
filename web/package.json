@@ -19,7 +19,6 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-router-dom": "^6.11.1",
     "shared": "../shared",
-    "typescript": "^4.9.5",
     "vite-plugin-commonjs": "^0.8.2",
     "web-vitals": "^2.1.4"
   },
