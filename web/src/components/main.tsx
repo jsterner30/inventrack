@@ -17,7 +17,7 @@ export const Main = memo(() => {
         if (!client) {
             return
         }
-        const response = await add(client, 1, 2);
+        const response = await add(client, {a:1, b:2});
         return response;
     });
 
