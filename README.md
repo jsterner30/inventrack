@@ -50,6 +50,22 @@ To develop this project, you must have the following installed on your computer:
    npm run frontend 
    ```
 
+### Installing Dependencies
+My least-favorite part about using [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) is that
+installing dependencies is slightly more annoying than usual if you want to maintain the integrity of the lockfile
+and project structure.
+
+Normally you would just run `npm i <package_name>` and you can still do that if you want
+to install a dependency for the top-level of the project, meaning that all three modules will have access to it.
+
+If you just want to install a dependency for one of the modules (i.e. just the backend), this is how you do it. Run a
+command like this from the top-level of the repository:
+```shell
+npm i --workspace=<workspace_name> <package_name>
+```
+e.g. `npm i --workspace=server axios` if I wanted to install axios in the backend module. The workspace names are just
+the names of the directories.
+
 ## Architecture
 This app uses a CS340-Tweeter-esque monorepo architecture with a backend module, a frontend module,
 and a third module for shared code, especially type definitions.
