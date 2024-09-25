@@ -73,5 +73,14 @@ the type definitions of requests and responses, which is standard for RESTful AP
 which will export definitions in both formats so that we only have to write them once. We define these models in the 'shared'
 directory (`shared/`), which the backend and frontend both import to access the type definitions.
 
+### Full Stack Example
+For an example of a what a route will look like with its backend implementation, shared types, and its frontend usage,
+look at the `/add` example route:
+- For the types, look at `/shared/src/model/add.model.ts`. Note how we export all of the needed exports in `/shared/src/index.ts`.
+- For the backend implementation, look at `/server/src/routes/add/root.ts`.
+  - Here you can see an example of how to mock a route while its still in development (using `Value.Create()`), but also
+    a simple example of how to implement the route once we are done mocking that route.
+- For the frontend implementation, look at `/web/src/client/add.ts` and the bottom of `/web/src/components/main.tsx`.
+
 ## Deployment
 For now, we have no plans to deploy this anywhere. It can be run on a local computer for testing and presentation.
