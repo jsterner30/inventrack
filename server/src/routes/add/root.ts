@@ -1,5 +1,6 @@
 import { TypeBoxTypeProvider, FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
 import { AddResponseSchema, AddRequestSchema } from 'shared'
+import { Value } from '@sinclair/typebox/value'
 
 // maybe use a generic argument for FastifyPluginAsync if we use options with fastify instance
 const add: FastifyPluginAsyncTypebox = async (fastifyApp, { }): Promise<void> => {
@@ -13,8 +14,14 @@ const add: FastifyPluginAsyncTypebox = async (fastifyApp, { }): Promise<void> =>
             }
         }
     }, async (request, reply) => {
-        const { a, b } = request.query
-        reply.status(200).send({ result: a + b})
+        // Example of implemeting the route
+        // const { a, b } = request.query
+        // const response = { result: a + b }
+
+        // Example of mocking a route with Typebox
+        const response = Value.Create(AddResponseSchema)
+
+        reply.status(200).send(response)
     })
 }
 
