@@ -35,15 +35,21 @@ To develop this project, you must have the following installed on your computer:
     ```shell
     npm run build:shared
     ```
-    > After running this, if you get IDE errors about the `'shared'` module not being found, you'll have to restart your Typescript service:
-    > - In Webstorm, click ![Typescript 5.4.5](https://github.com/user-attachments/assets/153d729f-58c7-4e87-9e02-c617664f0161) in the bottom-right corner of the screen and then click 'Restart Typescript Service'.
-    > - In VS Code, use <kbd>Cmd/Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, then type 'Restart TS Server' and hit <kbd>Enter</kbd>. This only works if the editor is currently focused on a typescript file.
-3. Start the backend. *If you make changes to the backend you'll have to kill it (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and restart
+   > After running this, if you get IDE errors about the `'shared'` module not being found, you'll have to restart your Typescript service:
+   > - In Webstorm, click ![Typescript 5.4.5](https://github.com/user-attachments/assets/153d729f-58c7-4e87-9e02-c617664f0161) in the bottom-right corner of the screen and then click 'Restart Typescript Service'.
+   > - In VS Code, use <kbd>Cmd/Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>P</kbd>, then type 'Restart TS Server' and hit <kbd>Enter</kbd>. This only works if the editor is currently focused on a typescript file.
+3. Create a `.env` file in the `/server` directory and populate it as follows, using values given to you by a team
+    member (do not add the `<`/`>` brackets):
+    ```dotenv
+    A=<the value given to you>
+    B=<the other avlue given to you>
+    ```
+4. Start the backend. *If you make changes to the backend you'll have to kill it (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and restart
     it with this command.*
     ```shell
     npm run backend
     ```
-4. **In a new terminal**, start the frontend. Vite should auto-detect most changes and do a hot-reload for you so you don't
+5. **In a new terminal**, start the frontend. Vite should auto-detect most changes and do a hot-reload for you so you don't
     need to manually re-run this command when you make changes, but on occasion it may fail and you'll need to manually
     re-run this.
     ```shell

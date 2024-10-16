@@ -7,13 +7,15 @@
     "build": "npm run clean && tsc",
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node -r ts-node/register -r dotenv/config src/index.ts"
+    "dev": "nodemon -r dotenv/config src/index.ts",
+    "node-dev": "node -r ts-node/register -r dotenv/config src/index.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^20.14.8",
     "dotenv": "^16.4.5",
+    "nodemon": "^3.1.7",
     "rimraf": "^6.0.1",
     "ts-node": "^10.9.2"
   },
