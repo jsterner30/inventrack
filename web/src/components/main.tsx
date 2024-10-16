@@ -4,6 +4,7 @@ import {useContext} from 'react';
 import {ClientContext} from '../context/client-context';
 import {add} from "../client/add";
 import { AddResponse } from 'shared'
+import { getProduct } from '../client/get-product';
 
 export const Main = memo(() => {
     const client = useContext(ClientContext)
@@ -21,6 +22,14 @@ export const Main = memo(() => {
         return response;
     });
 
+    const [searchProductLoad, doSearchProduct] = useTriggerLoad<string | undefined>(async (abort) => {
+        if (!client) {
+            return
+        }
+        const response = await getProduct(client, { id: "7507889750222" });
+        return response?.result?.title;
+    });
+
     if (quoteLoad.pending || !quoteLoad.value) {
         return <div>Loading...</div>;
     }
@@ -30,6 +39,7 @@ export const Main = memo(() => {
     }
 
     return (
+        <>
         <div>
             <blockquote>{quoteLoad.value}</blockquote>
             {addLoadState.pending ? (
@@ -41,5 +51,16 @@ export const Main = memo(() => {
               <div>Hey, this is the value! {addLoadState.value?.result ?? 'undefined'}</div>
             )}
         </div>
+        <div>
+            {searchProductLoad.pending ? (
+                <div>Getting product title...</div>
+            ) : (
+                <button onClick={() => { doSearchProduct() }}>Get product title</button>
+            )}
+            {searchProductLoad.value && (
+                <div>The title of the product is {searchProductLoad.value ?? 'undefined'}</div>
+            )}
+        </div>
+            </>
     );
 });
