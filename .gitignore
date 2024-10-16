@@ -8,7 +8,7 @@ node_modules
 
 # production
 /build
-dist
+**/dist
 /dist-ssr
 /lambda
 

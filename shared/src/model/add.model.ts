@@ -12,4 +12,3 @@ export const AddRequestSchema = Type.Object({
   b: Type.Number()
 })
 export type AddRequest = Static<typeof AddRequestSchema>
-

@@ -1,4 +1,4 @@
-import { ShopifyGraphQLClient } from "./shopify-client";
+import { ShopifyGraphQLClient } from './shopify-client'
 import { logger } from '../util/logger'
 
 const getProductByIdQuery = /* GraphQL */ `
@@ -30,22 +30,22 @@ const getProductByIdQuery = /* GraphQL */ `
       }
     }
   }
-`;
+`
 
-export async function getProductById(
-    client: ShopifyGraphQLClient,
-    id: string,
+export async function getProductById (
+  client: ShopifyGraphQLClient,
+  id: string
 ): Promise<string | null> {
-    const { data, errors } = await client.request(getProductByIdQuery, {
-        id: `gid://shopify/Product/${id}`,
-    }) as any;
+  const { data, errors } = await client.request(getProductByIdQuery, {
+    id: `gid://shopify/Product/${id}`
+  }) as any
 
-    logger.info(data)
-    logger.info(errors)
+  logger.info(data)
+  logger.info(errors)
 
-    if (errors) {
-        throw errors;
-    }
+  if (errors != null) {
+    throw errors
+  }
 
-    return data?.product?.title ? data?.product?.title : null;
+  return data?.product?.title != null ? data?.product?.title : null
 }
