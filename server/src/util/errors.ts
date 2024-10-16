@@ -32,10 +32,7 @@ export async function sendBasicMessageResponse (code: number, reply: FastifyRepl
     }
 
     await reply.status(code).send({
-        metadata: {
-            restricted: false,
-            validation_response: validationResponse
-        }
+        error: validationResponse
     })
 
     return validationResponse
