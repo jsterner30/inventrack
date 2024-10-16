@@ -44,8 +44,8 @@ To develop this project, you must have the following installed on your computer:
     ACCESS_TOKEN=<the real token>
     STORE_URL=quickstart-cae44a88.myshopify.com
     ```
-4. Start the backend. *If you make changes to the backend you'll have to kill it (<kbd>Ctrl</kbd>+<kbd>C</kbd>) and restart
-    it with this command.*
+4. Start the backend. We use [nodemon](https://www.npmjs.com/package/nodemon) to auto-reload when you make changes to the backend, you might just have to
+   click into the backend terminal to trigger the reload.
     ```shell
     npm run backend
     ```
