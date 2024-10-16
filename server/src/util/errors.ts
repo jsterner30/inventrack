@@ -1,8 +1,8 @@
 import { FastifyReply } from 'fastify'
 
 export interface ValidationInformation {
-    code: number
-    message: string
+  code: number
+  message: string
 }
 
 /**
@@ -10,81 +10,81 @@ export interface ValidationInformation {
  * @throws {Error} if no message is provided and none can be inferred from the status code
  */
 export async function sendBasicMessageResponse (code: number, reply: FastifyReply, message?: string): Promise<ValidationInformation> {
-    if (message === undefined) {
-        switch (code) {
-            case 404:
-                message = 'Resource not found.'
-                break
-            case 401:
-                message = 'Unauthorized'
-                break
-            case 403:
-                message = 'Forbidden'
-                break
-            default:
-                throw Error('Missing validation response message.')
-        }
+  if (message === undefined) {
+    switch (code) {
+      case 404:
+        message = 'Resource not found.'
+        break
+      case 401:
+        message = 'Unauthorized'
+        break
+      case 403:
+        message = 'Forbidden'
+        break
+      default:
+        throw Error('Missing validation response message.')
     }
+  }
 
-    const validationResponse: ValidationInformation = {
-        code,
-        message
-    }
+  const validationResponse: ValidationInformation = {
+    code,
+    message
+  }
 
-    await reply.status(code).send({
-        error: validationResponse
-    })
+  await reply.status(code).send({
+    error: validationResponse
+  })
 
-    return validationResponse
+  return validationResponse
 }
 
 export class InvalidRequestError extends Error {
-    constructor (message?: string) {
-        super(message ?? 'Bad Request')
-        Object.setPrototypeOf(this, InvalidRequestError.prototype)
-    }
+  constructor (message?: string) {
+    super(message ?? 'Bad Request')
+    Object.setPrototypeOf(this, InvalidRequestError.prototype)
+  }
 }
 
 export class NotFoundError extends Error {
-    constructor (message?: string) {
-        super(message ?? 'Not Found')
-        Object.setPrototypeOf(this, NotFoundError.prototype)
-    }
+  constructor (message?: string) {
+    super(message ?? 'Not Found')
+    Object.setPrototypeOf(this, NotFoundError.prototype)
+  }
 }
 
 export class UnauthorizedError extends Error {
-    constructor (message?: string) {
-        super(message ?? 'Unauthorized')
-        Object.setPrototypeOf(this, UnauthorizedError.prototype)
-    }
+  constructor (message?: string) {
+    super(message ?? 'Unauthorized')
+    Object.setPrototypeOf(this, UnauthorizedError.prototype)
+  }
 }
 
 export class UnauthenticatedError extends Error {
-    constructor (message?: string) {
-        super(message ?? 'Unauthenticated')
-        Object.setPrototypeOf(this, UnauthenticatedError.prototype)
-    }
+  constructor (message?: string) {
+    super(message ?? 'Unauthenticated')
+    Object.setPrototypeOf(this, UnauthenticatedError.prototype)
+  }
 }
 
 export class UnmodifiableError extends Error {
-    constructor (message?: string) {
-        super(message ?? 'Cannot Add/Update Item')
-        Object.setPrototypeOf(this, UnmodifiableError.prototype)
-    }
+  constructor (message?: string) {
+    super(message ?? 'Cannot Add/Update Item')
+    Object.setPrototypeOf(this, UnmodifiableError.prototype)
+  }
 }
 
 export class ConflictError extends Error {
-    constructor (message?: string) {
-        super(message ?? 'Duplicate Key Error')
-        Object.setPrototypeOf(this, ConflictError.prototype)
-    }
+  constructor (message?: string) {
+    super(message ?? 'Duplicate Key Error')
+    Object.setPrototypeOf(this, ConflictError.prototype)
+  }
 }
 
 export class DatabaseError extends Error {
-    constructor (message?: string) {
-        super(message ?? 'Error communicating with the database')
-        Object.setPrototypeOf(this, DatabaseError.prototype)
-    }
+  constructor (message?: string) {
+    super(message ?? 'Error communicating with the database')
+    Object.setPrototypeOf(this, DatabaseError.prototype)
+  }
 }
 
 /**
@@ -94,5 +94,5 @@ export class DatabaseError extends Error {
  * @throws {Error}
  */
 export function throwExpression (errorMessage: string): never {
-    throw new Error(errorMessage)
+  throw new Error(errorMessage)
 }

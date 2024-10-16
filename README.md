@@ -56,6 +56,28 @@ To develop this project, you must have the following installed on your computer:
    npm run frontend 
    ```
 
+### Making Changes
+When making changes that you want to save and share with the team, use the following steps:
+1. Make a branch, if you haven't already (We don't want to push straight to main because that can get confusing and mess up peoples git history.)
+   1. `git checkout -b <your branch name>`
+2. Validate your code
+   1. Lint your code: `npm run lint:fix` (from the project root)
+   2. Build your code: `npm run build` (from the project root)
+   3. (If we create any tests:) Test your code: `npm run test` (from the project root)
+   > If anything fails, fix the errors. Feel free to ask for help on fixing things.
+3. Commit your code
+   1. Use `git status` to see changes and use `git add <file/folder>` to selectively stage changes you want to commit.
+      Don't stage files you don't want to commit.
+   2. Use `git commit -m <commit message>` to commit your changes. More, smaller commits is better than one large one,
+       but it's not that big of a deal.
+4. Push your code
+   1. `git push` to create your branch in GitHub and send up your changes
+       > Consider running `git config push.autoSetupRemote true` and then trying again if you get an error about needing to set your remote
+   2. Git should print a link to the console, click on that. It will open in your browser and prompt you to create a PR!
+      Send the Pr to a teammate or the team discord for a review and then merge it to main.
+5. On your local machine, make sure to `git checkout main && git pull` after your branch has been merged. You can also
+   run `git branch -D <your old branch name>` to delete it locally to clean up.
+
 ### Installing Dependencies
 My least-favorite part about using [npm workspaces](https://docs.npmjs.com/cli/v7/using-npm/workspaces) is that
 installing dependencies is slightly more annoying than usual if you want to maintain the integrity of the lockfile

@@ -1,7 +1,6 @@
-import {Client} from "./client";
-import { AddRequest } from 'shared'
-import { AddResponse } from 'shared'
+import { Client } from './client'
+import { AddRequest, AddResponse } from 'shared'
 
-export async function add(client: Client, params: AddRequest): Promise<AddResponse> {
-    return await client.get<AddResponse>('/add', params)
+export async function add (client: Client, params: AddRequest): Promise<AddResponse> {
+  return await client.get<AddResponse>('/add', params)
 }
