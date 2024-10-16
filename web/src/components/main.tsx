@@ -4,9 +4,15 @@ import {useContext} from 'react';
 import {ClientContext} from '../context/client-context';
 import {add} from "../client/add";
 import { AddResponse } from 'shared'
+import { handleInstall } from "../util/handleInstall"
+import { useLocationUrl } from "../util/useLocation";
 
 export const Main = memo(() => {
     const client = useContext(ClientContext)
+    const url = useLocationUrl()
+    handleInstall(url, client)
+
+    // console.log(url.searchParams)
 
     const quoteLoad = useLoad(async (abort) => {
         const response = await fetch('https://bible-api.com/john 3:16', { signal: abort }).then((res) => res.json());
