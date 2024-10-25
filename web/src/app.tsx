@@ -5,7 +5,7 @@ import {
   Routes
 } from 'react-router-dom'
 import React from 'react'
-import { Main } from './components/main'
+import { Main } from './pages/main'
 
 const App: () => React.ReactElement = () => {
   return (

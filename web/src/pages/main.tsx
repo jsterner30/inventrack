@@ -5,6 +5,7 @@ import { ClientContext } from '../context/client-context'
 import { add } from '../client/add'
 import { AddResponse } from 'shared'
 import { getProduct } from '../client/get-product'
+import { InventoryPage } from './InventoryPage'
 
 export const Main = memo(() => {
   const client = useContext(ClientContext)
@@ -63,6 +64,7 @@ export const Main = memo(() => {
           <div>The title of the product is {searchProductLoad.value ?? 'undefined'}</div>
         )}
       </div>
+      <InventoryPage />
     </>
   )
 })
