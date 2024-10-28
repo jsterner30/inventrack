@@ -1,10 +1,11 @@
 import { TypeBoxTypeProvider, FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'
-import { GetProductRequestSchema, GetProductResponseSchema } from 'shared'
+import {
+  GetProductsRequestSchema,
+  GetProductsResponseSchema
+} from 'shared'
 import { ShopifyGraphQLClient } from '../../shopify/shopify-client'
-import { getProductById } from '../../shopify/product'
-import { NotFoundError } from '../../util/errors'
+import { getProducts } from '../../shopify/product'
 import { logger } from '../../util/logger'
-import { ErrorResSchema } from '../../models/errors.model'
 
 // maybe use a generic argument for FastifyPluginAsync if we use options with fastify instance
 const getProduct: FastifyPluginAsyncTypebox = async (fastifyApp): Promise<void> => {
@@ -12,10 +13,9 @@ const getProduct: FastifyPluginAsyncTypebox = async (fastifyApp): Promise<void> 
 
   fastify.get('/', {
     schema: {
-      querystring: GetProductRequestSchema,
+      querystring: GetProductsRequestSchema,
       response: {
-        200: GetProductResponseSchema,
-        404: ErrorResSchema
+        200: GetProductsResponseSchema
       }
     }
   }, async (request, reply) => {
@@ -27,13 +27,10 @@ const getProduct: FastifyPluginAsyncTypebox = async (fastifyApp): Promise<void> 
     logger.info(process.env.STORE_URL)
 
     const client = new ShopifyGraphQLClient(process.env.ACCESS_TOKEN, process.env.STORE_URL)
-    const product = await getProductById(client, request.query.id)
-    if (product == null) {
-      throw new NotFoundError('Product not found')
-    }
+    const products = await getProducts(client, request.query.pageSize)
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    reply.status(200).send({ result: product })
+    reply.status(200).send({ result: products })
   })
 }
 
