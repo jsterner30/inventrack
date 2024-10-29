@@ -8,6 +8,7 @@
 - [Fastify docs](https://fastify.dev/docs/latest/Reference/)
 - [Node.js v20 docs](https://nodejs.org/docs/latest-v20.x/api/index.html)
 - [React v18 docs](https://react.dev/reference/react)
+- [Shopify GraphQL API Docs](https://shopify.dev/docs/api/admin-graphql/2024-10/queries/product)
 
 ### Prerequisites
 To develop this project, you must have the following installed on your computer:
