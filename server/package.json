@@ -8,7 +8,7 @@
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -r dotenv/config src/index.ts",
-    "node-dev": "node -r ts-node/register -r dotenv/config src/index.ts"
+    "debug": "node -r ts-node/register -r dotenv/config src/index.ts"
   },
   "author": "",
   "license": "ISC",
