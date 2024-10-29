@@ -14,6 +14,11 @@ import {
 } from './util/errors'
 import { logger, fastifyLogOpts } from './util/logger'
 import cors from '@fastify/cors'
+import { ShopifyGraphQLClient } from './shopify/shopify-client'
+
+export interface ServerOptions {
+  shopifyClient: ShopifyGraphQLClient
+}
 
 export default async function server (): Promise<FastifyInstance> {
   const fastify = Fastify({
@@ -25,12 +30,19 @@ export default async function server (): Promise<FastifyInstance> {
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   fastify.register(cors)
 
+  if (process.env.ACCESS_TOKEN == null || process.env.STORE_URL == null) {
+    throw new Error('Missing environment variables')
+  }
+  // Note for backend specialist:
+  const shopifyClient = new ShopifyGraphQLClient(process.env.ACCESS_TOKEN, process.env.STORE_URL)
+
   // This loads all plugins defined in routes
   // define your routes in one of these
   fastify.register(AutoLoad, { // eslint-disable-line @typescript-eslint/no-floating-promises
     dir: join(__dirname, 'routes'),
     options: {
       // here's where you can pass in controllers, services or other shared classes to your routes
+      shopifyClient
     }
   })
 
