@@ -103,8 +103,8 @@ export async function getProducts (
   const { data, errors } = await client.request(getProductsQuery, {
     last: (before == null) ? null : pageSize,
     first: (before == null) ? pageSize : null,
-    before: before,
-    after: after
+    before,
+    after
   }) as any
 
   logger.info(data)

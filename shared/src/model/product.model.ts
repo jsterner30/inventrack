@@ -1,5 +1,5 @@
 import { Static, Type } from '@fastify/type-provider-typebox'
-import { PageInfoSchema } from "./response.model";
+import { PageInfoSchema } from './response.model'
 
 // Best to use default values (i.e. { default: ... }) for Response types. They aren't as useful for request types.
 export const ProductSchema = Type.Object({
@@ -22,7 +22,7 @@ export type GetProductResponse = Static<typeof GetProductResponseSchema>
 export const GetProductsRequestSchema = Type.Object({
   pageSize: Type.Integer(),
   after: Type.Optional(Type.String()),
-  before: Type.Optional(Type.String()),
+  before: Type.Optional(Type.String())
 })
 export type GetProductsRequest = Static<typeof GetProductsRequestSchema>
 

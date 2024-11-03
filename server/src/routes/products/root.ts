@@ -33,7 +33,7 @@ const getProduct: FastifyPluginAsyncTypebox = async (fastifyApp): Promise<void> 
     const [products, pageInfo] = await getProducts(client, pageSize, before, after)
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    reply.status(200).send({ result: products, pageInfo: pageInfo })
+    reply.status(200).send({ result: products, pageInfo })
   })
 }
 
