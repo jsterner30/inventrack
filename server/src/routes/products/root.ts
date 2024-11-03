@@ -27,10 +27,13 @@ const getProduct: FastifyPluginAsyncTypebox = async (fastifyApp): Promise<void> 
     logger.info(process.env.STORE_URL)
 
     const client = new ShopifyGraphQLClient(process.env.ACCESS_TOKEN, process.env.STORE_URL)
-    const products = await getProducts(client, request.query.pageSize)
+    const pageSize = request.query.pageSize
+    const before = request.query.before ?? null
+    const after = request.query.after ?? null
+    const [products, pageInfo] = await getProducts(client, pageSize, before, after)
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    reply.status(200).send({ result: products })
+    reply.status(200).send({ result: products, pageInfo: pageInfo })
   })
 }
 

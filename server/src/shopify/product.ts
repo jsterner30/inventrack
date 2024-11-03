@@ -1,6 +1,6 @@
 import { ShopifyGraphQLClient } from './shopify-client'
 import { logger } from '../util/logger'
-import { Product } from 'shared'
+import { Product, PageInfo } from 'shared'
 
 const getProductByIdQuery = /* GraphQL */ `
   query productById($id: ID!) {
@@ -60,26 +60,29 @@ export async function getProductById (
   }
 }
 
-const getProductsQuery = /* TODO: page Size */ `
-  query {
-    products(first: 10) {
-      nodes {
-          id
-          title
-          totalInventory
-          handle
-          variantsCount {
-              count
-              precision
-          }
-          variants(first: 20) {
-              nodes {
-                  title
-                  sku
-                  displayName
-                  inventoryQuantity
-              }
-          }
+const getProductsQuery = /* GraphQL */ `
+  query products($first: Int, $last: Int, $before: String, $after: String) {
+    products(first: $first, last: $last, before: $before, after: $after) {
+      edges {
+        node {
+            id
+            title
+            totalInventory
+            handle
+            variantsCount {
+                count
+                precision
+            }
+            variants(first: 20) {
+                nodes {
+                    title
+                    sku
+                    displayName
+                    inventoryQuantity
+                }
+            }
+        }
+        cursor
       }
       pageInfo {
           hasPreviousPage
@@ -93,10 +96,15 @@ const getProductsQuery = /* TODO: page Size */ `
 
 export async function getProducts (
   client: ShopifyGraphQLClient,
-  pageSize: number
-): Promise<Product[]> {
+  pageSize: number,
+  before: String | null,
+  after: String | null
+): Promise<[Product[], PageInfo]> {
   const { data, errors } = await client.request(getProductsQuery, {
-    // pageSize: `${pageSize}`
+    last: (before == null) ? null : pageSize,
+    first: (before == null) ? pageSize : null,
+    before: before,
+    after: after
   }) as any
 
   logger.info(data)
@@ -107,13 +115,13 @@ export async function getProducts (
   }
 
   const products: Product[] = []
-  for (const prod of data?.products.nodes) {
+  for (const edge of data?.products.edges) {
+    const prod = edge.node
     products.push({
       id: prod.id,
       title: prod.title,
       totalInventory: prod.totalInventory
     })
   }
-
-  return products
+  return [products, data?.products.pageInfo]
 }
