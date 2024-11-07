@@ -37,3 +37,32 @@
         transform: translateY(0px);
     }
 }
+
+/* Putting it in CSS file is easy, but good luck finding this code */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: fit-content;
+    /* 20px top, 16px right, 40px bottom, 16px left */
+    padding: 20px 16px 40px 16px; 
+    /* Background is picoCSS sand to match the theme */
+    background-color: #CCC6B4;
+
+    /* Use if you turn off light-mode only settings */
+    /* @media (prefers-color-scheme: dark) {
+        color: #000;
+    } */
+}
+
+
+/* CSS For table's next and previous buttons */
+.tableFooter {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.inventoryPage {
+    height: 100vh;
+}

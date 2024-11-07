@@ -87,7 +87,7 @@ export const Table: React.FC<Props> = ({ items }) => {
                 <th
                   key={header.id}
                   onClick={header.column.getToggleSortingHandler()} // Enable sorting on click
-                  style={{ cursor: 'pointer' }}
+                  style={{ cursor: 'pointer', textAlign: 'center', padding: '8px' }}
                 >
                   {header.isPlaceholder
                     ? null
@@ -105,7 +105,7 @@ export const Table: React.FC<Props> = ({ items }) => {
           {table.getRowModel().rows.map(row => (
             <tr key={row.id}>
               {row.getVisibleCells().map(cell => (
-                <td key={cell.id}>
+                <td key={cell.id} style={{ textAlign: 'center', padding: '8px' }}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
@@ -113,14 +113,15 @@ export const Table: React.FC<Props> = ({ items }) => {
           ))}
         </tbody>
       </table>
-      <div className='h-4' />
-      <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
-        Previous
-      </button>
-      <div>Viewing {pageIndex * pageSize}-{(pageIndex + 1) * pageSize} Out Of {items.length} Items</div>
-      <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
-        Next
-      </button>
+      <div className='tableFooter'>
+        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+          Previous
+        </button>
+        <div>Viewing {pageIndex * pageSize}-{(pageIndex + 1) * pageSize} Out Of {items.length} Items</div>
+        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          Next
+        </button>
+      </div>
     </div>
   )
 }

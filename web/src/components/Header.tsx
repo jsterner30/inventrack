@@ -7,7 +7,7 @@ interface Props {
 
 export const Header: React.FC<Props> = ({ logoUrl }) => {
   return (
-    <header className='bg-light py-3 px-4 d-flex justify-content-between align-items-center'>
+    <header>
       <img
         src={logoUrl}
         alt='Company Logo'
