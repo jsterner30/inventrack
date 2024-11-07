@@ -64,6 +64,8 @@ export const Main = memo(() => {
           <div>The title of the product is {searchProductLoad.value ?? 'undefined'}</div>
         )}
       </div>
+      {/* Add line so we can see what is for testing and what's not */}
+      <hr />
       <InventoryPage />
     </>
   )
