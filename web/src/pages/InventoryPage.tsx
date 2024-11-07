@@ -1,12 +1,11 @@
 import React from 'react'
 import { Header } from '../components/Header'
-import { InventoryTableHeader } from '../components/InventoryTableHeader'
-import { InventoryTableRow } from '../components/InventoryTableRow'
 import { InventoryItem } from '../util/types'
+import { Table } from '../components/Table'
 
 const inventoryData: InventoryItem[] = Array(10).fill({
   productName: '10" Stainless Steel Fry Pan',
-  imageUrl: 'https://example.com/pan-image.jpg',
+  imageUrl: 'https://via.placeholder.com/300',
   sku: '56002',
   totalInventory: 111,
   committed: 8,
@@ -23,12 +22,8 @@ export const InventoryPage: React.FC = () => {
           Inventory: All Locations
         </h1>
 
-        <div className='table-responsive'>
-          <InventoryTableHeader />
-          {inventoryData.map((item, index) => (
-            <InventoryTableRow key={index} item={item} />
-          ))}
-        </div>
+        {/* Pass in items to table as array here */}
+        <Table items={inventoryData} /> 
       </main>
     </div>
   )
