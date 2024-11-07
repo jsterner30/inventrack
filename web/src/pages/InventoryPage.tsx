@@ -23,7 +23,7 @@ export const InventoryPage: React.FC = () => {
         </h1>
 
         {/* Pass in items to table as array here */}
-        <Table items={inventoryData} /> 
+        <Table items={inventoryData} />
       </main>
     </div>
   )
