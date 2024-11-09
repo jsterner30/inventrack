@@ -1,35 +1,58 @@
 import { ShopifyGraphQLClient } from './shopify-client'
 import { logger } from '../util/logger'
-import { ProductSchema, Product, PageInfo } from 'shared'
+import { ProductSchema, Product, PageInfo, PageInfoSchema } from 'shared'
 import { isValid } from '../util/validate'
+
+const internalProductQuery = /* GraphQL */ `
+id
+handle
+variants(first: 100) {
+  nodes {
+    id
+    title
+    image {
+      url
+    }
+    contextualPricing(context: {}) {
+      price {
+        amount
+        currencyCode
+      }
+    }
+  }
+}
+title
+totalInventory
+images(first: 1) {
+  nodes {
+    url
+    id
+  }
+}
+`
 
 const getProductByIdQuery = /* GraphQL */ `
   query productById($id: ID!) {
     product(id: $id) {
-      id
-      handle
-      variants(first: 100) {
-        nodes {
-          id
-          title
-          image {
-            url
-          }
-          contextualPricing(context: {}) {
-            price {
-              amount
-              currencyCode
-            }
-          }
+      ${internalProductQuery}
+    }
+  }
+`
+
+const getProductsQuery = /* GraphQL */ `
+  query products($first: Int, $last: Int, $before: String, $after: String) {
+    products(first: $first, last: $last, before: $before, after: $after) {
+      edges {
+        node {
+          ${internalProductQuery}
         }
+        cursor
       }
-      title
-      totalInventory
-      images(first: 1) {
-        nodes {
-          url
-          id
-        }
+      pageInfo {
+          hasPreviousPage
+          hasNextPage
+          startCursor
+          endCursor
       }
     }
   }
@@ -60,40 +83,6 @@ export async function getProductById (
   return product
 }
 
-const getProductsQuery = /* GraphQL */ `
-  query products($first: Int, $last: Int, $before: String, $after: String) {
-    products(first: $first, last: $last, before: $before, after: $after) {
-      edges {
-        node {
-            id
-            title
-            totalInventory
-            handle
-            variantsCount {
-                count
-                precision
-            }
-            variants(first: 20) {
-                nodes {
-                    title
-                    sku
-                    displayName
-                    inventoryQuantity
-                }
-            }
-        }
-        cursor
-      }
-      pageInfo {
-          hasPreviousPage
-          hasNextPage
-          startCursor
-          endCursor
-      }
-    }
-  }
-`
-
 export async function getProducts (
   client: ShopifyGraphQLClient,
   pageSize: number,
@@ -116,16 +105,15 @@ export async function getProducts (
 
   const products: Product[] = []
   for (const edge of data?.products.edges) {
-    const prod = edge.node
-    // from caleb: just making this change to make the types happy for the merge but feel free to change back later
-    products.push(prod)
-    // products.push({
-    //   id: prod.id,
-    //   title: prod.title,
-    //   totalInventory: prod.totalInventory
-    // })
+    const product = edge.node
+    if (!isValid<Product>(ProductSchema, product, 'product')) {
+      throw new Error('Error mapping product')
+    }
+    products.push(product)
   }
-  // TODO maybe validate this at runtime with isValid,
-  //  but certainly not a necessity or priority
-  return [products, data?.products.pageInfo]
+  const pageInfo = data?.products.pageInfo
+  if (!isValid<PageInfo>(PageInfoSchema, pageInfo, 'page info')) {
+    throw new Error('Error mapping page info')
+  }
+  return [products, pageInfo]
 }
