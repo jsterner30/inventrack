@@ -11,7 +11,8 @@
     "build:backend": "npm run build --workspace=server",
     "build:frontend": "npm run build --workspace=web",
     "backend": "npm run dev --workspace=server",
-    "frontend": "npm run dev --workspace=web"
+    "frontend": "npm run dev --workspace=web",
+    "spec": "npm run spec --workspace=server"
   },
   "author": "",
   "license": "ISC",

@@ -1,17 +1,9 @@
-import server from './src/server'
+import server from './server'
 import * as fs from 'fs'
-import { logger } from './src/util/logger'
-import { Db } from './src/db/db-class'
-import { envMock, mockProcessEnv } from './test/helpers'
+import { logger } from './util/logger'
 
 async function generateSpec (): Promise<void> {
-  mockProcessEnv()
-  const app = await server({
-    db: new Db(envMock.dbUser, envMock.dbPassword, envMock.dbAddress, envMock.dbPort, envMock.dbName),
-    authenticate: false,
-    authorize: false
-  }
-  )
+  const app = await server()
   await app.ready().then(() => {
     // generate the swagger file
     const yaml = (app as any).swagger({ yaml: true })

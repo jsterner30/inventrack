@@ -15,6 +15,8 @@ import {
 import { logger, fastifyLogOpts } from './util/logger'
 import cors from '@fastify/cors'
 import { ShopifyGraphQLClient } from './shopify/shopify-client'
+import Swagger, {} from '@fastify/swagger'
+import SwaggerUi from '@fastify/swagger-ui'
 
 export interface ServerOptions {
   shopifyClient: ShopifyGraphQLClient
@@ -26,6 +28,20 @@ export default async function server (): Promise<FastifyInstance> {
   })
 
   fastify.setValidatorCompiler(TypeBoxValidatorCompiler)
+
+  await fastify.register(Swagger, {
+    openapi: { // if you need a swagger v2 generated, change 'openapi' to 'swagger'
+      info: {
+        title: 'Inventrack Server OpenAPI Spec',
+        description: 'OpenAPI v3 Specification for the Inventrack backend server',
+        version: '0.0.0'
+      }
+    }
+  })
+
+  await fastify.register(SwaggerUi, {
+    routePrefix: '/spec'
+  })
 
   // eslint-disable-next-line @typescript-eslint/no-floating-promises
   fastify.register(cors)
