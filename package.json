@@ -16,7 +16,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tanstack/react-table": "^8.20.5",
     "vite-plugin-dts": "^3.3.1"
   },
   "devDependencies": {
