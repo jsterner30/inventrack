@@ -3,12 +3,11 @@ import {
   GetProductsRequestSchema,
   GetProductsResponseSchema
 } from 'shared'
-import { ShopifyGraphQLClient } from '../../shopify/shopify-client'
 import { getProducts } from '../../shopify/product'
-import { logger } from '../../util/logger'
+import { ServerOptions } from '../../server'
 
 // maybe use a generic argument for FastifyPluginAsync if we use options with fastify instance
-const getProduct: FastifyPluginAsyncTypebox = async (fastifyApp): Promise<void> => {
+const getProduct: FastifyPluginAsyncTypebox<ServerOptions> = async (fastifyApp, { shopifyClient }): Promise<void> => {
   const fastify = fastifyApp.withTypeProvider<TypeBoxTypeProvider>()
 
   fastify.get('/', {
@@ -19,18 +18,10 @@ const getProduct: FastifyPluginAsyncTypebox = async (fastifyApp): Promise<void> 
       }
     }
   }, async (request, reply) => {
-    if (process.env.ACCESS_TOKEN == null || process.env.STORE_URL == null) {
-      throw new Error('Missing environment variables')
-    }
-
-    logger.info(process.env.ACCESS_TOKEN)
-    logger.info(process.env.STORE_URL)
-
-    const client = new ShopifyGraphQLClient(process.env.ACCESS_TOKEN, process.env.STORE_URL)
     const pageSize = request.query.pageSize
     const before = request.query.before ?? null
     const after = request.query.after ?? null
-    const [products, pageInfo] = await getProducts(client, pageSize, before, after)
+    const [products, pageInfo] = await getProducts(shopifyClient, pageSize, before, after)
 
     // eslint-disable-next-line @typescript-eslint/no-floating-promises
     reply.status(200).send({ result: products, pageInfo })
