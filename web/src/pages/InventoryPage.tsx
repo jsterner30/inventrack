@@ -14,18 +14,18 @@ const inventoryData: InventoryItem[] = Array(10).fill({
 })
 
 export const InventoryPage: React.FC = () => {
-  const [selectedItem, setSelectedItem] = React.useState<InventoryItem | null>(null);
-  const [isModalOpen, setIsModalOpen] = React.useState(false); 
+  const [selectedItem, setSelectedItem] = React.useState<InventoryItem | null>(null)
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
 
   const handleRowClick = (item: InventoryItem) => {
-    setSelectedItem(item);
-    setIsModalOpen(true);
-  };
+    setSelectedItem(item)
+    setIsModalOpen(true)
+  }
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedItem(null);
-  };
+    setIsModalOpen(false)
+    setSelectedItem(null)
+  }
 
   return (
     <div className='inventoryPage'>
@@ -37,7 +37,7 @@ export const InventoryPage: React.FC = () => {
         </h1>
 
         {/* Pass in items to table as array here */}
-        <Table items={inventoryData} onRowClick={handleRowClick}/>
+        <Table items={inventoryData} onRowClick={handleRowClick} />
         <ItemModal
           item={selectedItem}
           isOpen={isModalOpen}

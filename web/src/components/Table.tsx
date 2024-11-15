@@ -13,7 +13,7 @@ import {
 
 interface Props {
   items: InventoryItem[]
-  onRowClick: (item:InventoryItem) => void;
+  onRowClick: (item: InventoryItem) => void
 }
 
 const columnHelper = createColumnHelper<InventoryItem>()
