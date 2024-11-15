@@ -13,6 +13,7 @@ import {
 
 interface Props {
   items: InventoryItem[]
+  onRowClick: (item: InventoryItem) => void
 }
 
 const columnHelper = createColumnHelper<InventoryItem>()
@@ -46,7 +47,7 @@ const columns = [
   })
 ]
 
-export const Table: React.FC<Props> = ({ items }) => {
+export const Table: React.FC<Props> = ({ items, onRowClick }) => {
   const [pageIndex, setPageIndex] = React.useState(0)
   const [pageSize, setPageSize] = React.useState(5)
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -103,7 +104,7 @@ export const Table: React.FC<Props> = ({ items }) => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id}>
+            <tr key={row.id} onClick={() => onRowClick(items[row.index])}>
               {row.getVisibleCells().map(cell => (
                 <td key={cell.id} style={{ textAlign: 'center', padding: '8px' }}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
