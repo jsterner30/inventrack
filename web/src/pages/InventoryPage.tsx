@@ -17,12 +17,12 @@ export const InventoryPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = React.useState<InventoryItem | null>(null)
   const [isModalOpen, setIsModalOpen] = React.useState(false)
 
-  const handleRowClick = (item: InventoryItem) => {
+  const handleRowClick = (item: InventoryItem): void => {
     setSelectedItem(item)
     setIsModalOpen(true)
   }
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (): void => {
     setIsModalOpen(false)
     setSelectedItem(null)
   }
