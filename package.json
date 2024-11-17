@@ -11,12 +11,12 @@
     "build:backend": "npm run build --workspace=server",
     "build:frontend": "npm run build --workspace=web",
     "backend": "npm run dev --workspace=server",
-    "frontend": "npm run dev --workspace=web"
+    "frontend": "npm run dev --workspace=web",
+    "spec": "npm run spec --workspace=server"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tanstack/react-table": "^8.20.5",
     "vite-plugin-dts": "^3.3.1"
   },
   "devDependencies": {

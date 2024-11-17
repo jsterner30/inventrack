@@ -8,7 +8,8 @@
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -r dotenv/config src/index.ts",
-    "debug": "node -r ts-node/register -r dotenv/config src/index.ts"
+    "debug": "node -r ts-node/register -r dotenv/config src/index.ts",
+    "spec": "node -r ts-node/register -r dotenv/config src/generateSpec.ts"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +23,8 @@
   "dependencies": {
     "@fastify/autoload": "^6.0.0",
     "@fastify/cors": "^10.0.0",
+    "@fastify/swagger": "^9.2.0",
+    "@fastify/swagger-ui": "^5.1.0",
     "@fastify/type-provider-typebox": "^5.0.0",
     "@shopify/admin-api-client": "^1.0.3",
     "@shopify/shopify-api": "^9.6.0",
@@ -32,7 +35,10 @@
     "shared": "../shared"
   },
   "nodemonConfig": {
-    "watch": ["./", "../shared/**/*"],
+    "watch": [
+      "./",
+      "../shared/**/*"
+    ],
     "delay": 500
   }
 }
