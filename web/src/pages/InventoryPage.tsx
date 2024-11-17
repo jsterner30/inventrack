@@ -1,21 +1,16 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Header } from '../components/Header'
+import { useLoad } from '../util/load'
 import { InventoryItem } from '../util/types'
 import { ItemModal } from '../components/ItemModal'
 import { Table } from '../components/Table'
-
-const inventoryData: InventoryItem[] = Array(10).fill({
-  productName: '10" Stainless Steel Fry Pan',
-  imageUrl: 'https://via.placeholder.com/300',
-  sku: '56002',
-  totalInventory: 111,
-  committed: 8,
-  available: 103
-})
+import { ClientContext } from '../context/client-context'
+import { getProducts } from '../client/get-products'
 
 export const InventoryPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = React.useState<InventoryItem | null>(null)
   const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const client = useContext(ClientContext)
 
   const handleRowClick = (item: InventoryItem): void => {
     setSelectedItem(item)
@@ -25,6 +20,24 @@ export const InventoryPage: React.FC = () => {
   const handleCloseModal = (): void => {
     setIsModalOpen(false)
     setSelectedItem(null)
+  }
+  const productLoad = useLoad(async (abort) => {
+    if (client == null) {
+      return
+    }
+    const response = await getProducts(client, { pageSize: 15 })
+    return (response?.result ?? []).map((product) => ({
+      productName: product.title,
+      imageUrl: product.images?.nodes?.[0]?.url,
+      sku: product?.id?.split('/')?.pop() ?? '',
+      totalInventory: product.totalInventory,
+      committed: product.totalInventory,
+      available: product.totalInventory
+    }))
+  }, [])
+
+  if (productLoad.pending) {
+    return <div>Loading...</div>
   }
 
   return (
@@ -37,7 +50,7 @@ export const InventoryPage: React.FC = () => {
         </h1>
 
         {/* Pass in items to table as array here */}
-        <Table items={inventoryData} onRowClick={handleRowClick} />
+        <Table items={productLoad?.value ?? []} onRowClick={handleRowClick} />
         <ItemModal
           item={selectedItem}
           isOpen={isModalOpen}
