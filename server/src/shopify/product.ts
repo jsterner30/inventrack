@@ -94,24 +94,26 @@ export async function getProducts (
     first: (before == null) ? pageSize : null,
     before,
     after
-  }) as any
-
-  logger.info(data)
-  logger.info(errors)
+  }) as Record<string, any>
 
   if (errors != null) {
     throw errors
   }
 
+  if (data == null || data.products == null || data.products.edges == null || data.products.pageInfo == null) {
+    logger.fatal('FATAL: data.products (or one of its children, edges or pageInfo) were null coming back from Shopify')
+    throw new Error('Error getting data from Shopify GraphQL Endpoint')
+  }
+
   const products: Product[] = []
-  for (const edge of data?.products.edges) {
+  for (const edge of data.products.edges) {
     const product = edge.node
     if (!isValid<Product>(ProductSchema, product, 'product')) {
       throw new Error('Error mapping product')
     }
     products.push(product)
   }
-  const pageInfo = data?.products.pageInfo
+  const pageInfo = data.products.pageInfo
   if (!isValid<PageInfo>(PageInfoSchema, pageInfo, 'page info')) {
     throw new Error('Error mapping page info')
   }

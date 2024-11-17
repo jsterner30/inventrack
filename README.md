@@ -95,6 +95,17 @@ npm i --workspace=<workspace_name> <package_name>
 e.g. `npm i --workspace=server axios` if I wanted to install axios in the backend module. The workspace names are just
 the names of the directories.
 
+### OpenAPI Server Docs
+To facilitate calling our backend routes while doing frontend development, there are two ways to view a
+[Swagger-style OpenAPI v3](https://swagger.io/specification/) spec document for our backend routes. To do either of
+these, you must be able to run the project locally, including having dependencies installed and with a `.env` file.
+- Option 1: (Recommended) Via a web interface:
+    - Run `npm run backend`
+    - Navigate to <http://localhost:8080/spec> in your browser, and voila! The backend routes.
+- Option 2: Generate a `spec.yml` file:
+    - Run `npm run spec`
+    - Copy/open the generated `server/spec.yml` file in your preferred Swagger editor (For example, the official [Swagger Editor](https://editor.swagger.io/))
+
 ## Architecture
 This app uses a CS340-Tweeter-esque monorepo architecture with a backend module, a frontend module,
 and a third module for shared code, especially type definitions.
