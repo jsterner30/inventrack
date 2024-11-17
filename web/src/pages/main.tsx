@@ -10,11 +10,13 @@ import { InventoryPage } from './InventoryPage'
 export const Main = memo(() => {
   const client = useContext(ClientContext)
 
+  // Example of calling an API immediately on pageload
   const quoteLoad = useLoad(async (abort) => {
     const response = await fetch('https://bible-api.com/john 3:16', { signal: abort }).then(async (res) => await res.json())
     return response.text
   }, [])
 
+  // Example of calling an API on a button press
   const [addLoadState, doAdd] = useTriggerLoad<AddResponse | undefined>(async (abort) => {
     if (client == null) {
       return
