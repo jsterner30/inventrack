@@ -29,7 +29,7 @@ export const InventoryPage: React.FC = () => {
     return (response?.result ?? []).map((product) => ({
       productName: product.title,
       imageUrl: product.images?.nodes?.[0]?.url,
-      sku: product.id.split('/').pop(),
+      sku: product?.id?.split('/')?.pop() ?? '',
       totalInventory: product.totalInventory,
       committed: product.totalInventory,
       available: product.totalInventory
