@@ -63,6 +63,12 @@ header {
     justify-content: space-around;
 }
 
+.clickableRow:hover td {
+    background-color: #fff4e6; /* Soft orange-beige background */
+    transition: background-color 0.2s ease, border 0.2s ease;
+    cursor: pointer;
+}
+
 .inventoryPage {
     height: 100vh;
 }

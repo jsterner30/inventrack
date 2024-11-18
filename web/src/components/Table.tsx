@@ -104,7 +104,7 @@ export const Table: React.FC<Props> = ({ items, onRowClick }) => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id} onClick={() => onRowClick(items[row.index])}>
+            <tr key={row.id} onClick={() => onRowClick(items[row.index])} className='clickableRow'>
               {row.getVisibleCells().map(cell => (
                 <td key={cell.id} style={{ textAlign: 'center', padding: '8px' }}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
