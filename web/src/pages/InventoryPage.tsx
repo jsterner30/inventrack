@@ -25,7 +25,10 @@ export const InventoryPage: React.FC = () => {
     if (client == null) {
       return
     }
-    const response = await getProducts(client, { pageSize: 15 })
+    // This page size is kind of silly now since we're just doing fake client-side pagination, ultimately we should be
+    // doing server-side pagination instead where we fetch each page from the server
+    // but I don't really want to do the work to refactor the frontend to do that so it's fine
+    const response = await getProducts(client, { pageSize: 200 })
     return (response?.result ?? []).map((product) => ({
       productName: product.title,
       imageUrl: product.images?.nodes?.[0]?.url,
