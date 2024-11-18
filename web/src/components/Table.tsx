@@ -118,7 +118,7 @@ export const Table: React.FC<Props> = ({ items, onRowClick }) => {
         <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
           Previous
         </button>
-        <div>Viewing {pageIndex * pageSize}-{(pageIndex + 1) * pageSize} Out Of {items.length} Items</div>
+        <div>Viewing {pageIndex * pageSize}-{Math.min((pageIndex + 1) * pageSize, items.length)} Out Of {items.length} Items</div>
         <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
           Next
         </button>
