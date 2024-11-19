@@ -14,6 +14,7 @@ const getProduct: FastifyPluginAsyncTypebox<ServerOptions> = async (fastifyApp, 
       querystring: GetProductRequestSchema,
       response: {
         200: GetProductResponseSchema,
+        400: ErrorResSchema,
         404: ErrorResSchema
       }
     }

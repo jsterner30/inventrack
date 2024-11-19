@@ -5,6 +5,7 @@ import {
 } from 'shared'
 import { getProducts } from '../../shopify/product'
 import { ServerOptions } from '../../server'
+import { ErrorResSchema } from '../../models/errors.model'
 
 // maybe use a generic argument for FastifyPluginAsync if we use options with fastify instance
 const getProduct: FastifyPluginAsyncTypebox<ServerOptions> = async (fastifyApp, { shopifyClient }): Promise<void> => {
@@ -14,7 +15,8 @@ const getProduct: FastifyPluginAsyncTypebox<ServerOptions> = async (fastifyApp, 
     schema: {
       querystring: GetProductsRequestSchema,
       response: {
-        200: GetProductsResponseSchema
+        200: GetProductsResponseSchema,
+        400: ErrorResSchema
       }
     }
   }, async (request, reply) => {

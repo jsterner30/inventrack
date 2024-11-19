@@ -104,7 +104,7 @@ export const Table: React.FC<Props> = ({ items, onRowClick }) => {
         </thead>
         <tbody>
           {table.getRowModel().rows.map(row => (
-            <tr key={row.id} onClick={() => onRowClick(items[row.index])}>
+            <tr key={row.id} onClick={() => onRowClick(items[row.index])} className='clickableRow'>
               {row.getVisibleCells().map(cell => (
                 <td key={cell.id} style={{ textAlign: 'center', padding: '8px' }}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -118,7 +118,7 @@ export const Table: React.FC<Props> = ({ items, onRowClick }) => {
         <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
           Previous
         </button>
-        <div>Viewing {pageIndex * pageSize}-{Math.min((pageIndex + 1) * pageSize, items.length)} Out Of {items.length} Items</div>
+        <div>Viewing {1 + (pageIndex * pageSize)}-{Math.min((pageIndex + 1) * pageSize, items.length)} out of {items.length} items</div>
         <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
           Next
         </button>
