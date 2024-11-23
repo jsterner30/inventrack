@@ -12,6 +12,7 @@ variants(first: 100) {
     title
     image {
       url
+      id
     }
     contextualPricing(context: {}) {
       price {
