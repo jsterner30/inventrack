@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { InventoryItem } from '../util/types'
+import { FaPencilAlt } from 'react-icons/fa'
 
 interface ItemModalProps {
   item: InventoryItem | null
@@ -8,6 +9,15 @@ interface ItemModalProps {
 }
 
 export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose }) => {
+  let interval: number = 10 // Edit this to change the interval of increment and decrement for the inventory and buttons that display it.
+  const [isEditing, setIsEditing] = useState(false)
+  const [inventory, setInventory] = useState<number>(item?.totalInventory ?? 0)
+  useEffect(() => {
+    console.log(item)
+    if (item && typeof item.totalInventory === 'number') {
+      setInventory(item.totalInventory) // Update inventory when item changes
+    }
+  }, [item])
   useEffect(() => {
     // Function to close modal when you hit 'Esc'
     const handleKeyDown = (event: KeyboardEvent): void => {
@@ -27,15 +37,52 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose }) =
 
   if (!isOpen || (item == null)) return null
 
+  
+  const handleEditClick = () => {
+    setIsEditing(true)
+  }
+
+  const handleIncrement = () => {
+    setInventory(prev => prev + interval)
+  }
+
+  const handleDecrement = () => {
+    setInventory(prev => (prev - interval >= 0 ? prev - interval : 0)) // Ensure inventory doesn't go below 0
+  }
+
+  const handleSave = () => {
+    setIsEditing(false)
+    alert(`Save complete. New inventory: ${inventory}`)
+    // You can add your API call here later
+  }
+
   return (
     <div className='modal-overlay'>
       <div className='modal-content'>
         <h2>{item.productName}</h2>
         <img src={item.imageUrl} alt={item.productName} />
         <p>SKU: {item.sku}</p>
-        <p>Total Inventory: {item.totalInventory}</p>
-        <p>Committed: {item.committed}</p>
-        <p>Available: {item.available}</p>
+        <div className='inventory-edit-section'>
+          <label>Total Inventory:</label>
+          {isEditing ? (
+            <div className='edit-inventory-container' style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <button onClick={handleDecrement}>-{interval}</button>
+              <input
+                type='number'
+                value={inventory}
+                onChange={(e) => setInventory(Number(e.target.value))}
+                style={{ textAlign: 'center', width: '100px' }}
+              />
+              <button onClick={handleIncrement}>+{interval}</button>
+              <button onClick={handleSave}>Save</button>
+            </div>
+          ) : (
+            <span>
+              {inventory} <FaPencilAlt className='edit-icon' onClick={handleEditClick} />
+            </span>
+          )}
+        </div>
+        <br></br>
         <button onClick={onClose}>Close</button>
       </div>
     </div>
