@@ -2,24 +2,14 @@ import { ShopifyGraphQLClient } from './shopify-client'
 import { logger } from '../util/logger'
 import { ProductSchema, Product, PageInfo, PageInfoSchema } from 'shared'
 import { isValid } from '../util/validate'
+import {getVariantInventory, internalVariantQuery} from "./productVariant";
 
 const internalProductQuery = /* GraphQL */ `
 id
 handle
 variants(first: 100) {
   nodes {
-    id
-    title
-    image {
-      url
-      id
-    }
-    contextualPricing(context: {}) {
-      price {
-        amount
-        currencyCode
-      }
-    }
+    ${internalVariantQuery}
   }
 }
 title
@@ -59,6 +49,16 @@ const getProductsQuery = /* GraphQL */ `
   }
 `
 
+async function parseProduct(product: any, client: ShopifyGraphQLClient): Promise<Product> {
+  for (const variant of product.variants.nodes) {
+    variant.inventory = await getVariantInventory(client, variant.id, variant.inventoryItem.locationsCount.count) // TODO: Reduce API calls
+  }
+  if (!isValid<Product>(ProductSchema, product, 'product')) {
+    throw new Error('Error mapping product')
+  }
+  return product
+}
+
 export async function getProductById (
   client: ShopifyGraphQLClient,
   id: string
@@ -77,11 +77,7 @@ export async function getProductById (
     return null
   }
 
-  const product: unknown = data.product
-  if (!isValid<Product>(ProductSchema, product, 'product')) {
-    return null
-  }
-  return product
+  return await parseProduct(data.product, client)
 }
 
 export async function getProducts (
@@ -108,11 +104,7 @@ export async function getProducts (
 
   const products: Product[] = []
   for (const edge of data.products.edges) {
-    const product = edge.node
-    if (!isValid<Product>(ProductSchema, product, 'product')) {
-      throw new Error('Error mapping product')
-    }
-    products.push(product)
+    products.push(await parseProduct(edge.node, client))
   }
   const pageInfo = data.products.pageInfo
   if (!isValid<PageInfo>(PageInfoSchema, pageInfo, 'page info')) {
