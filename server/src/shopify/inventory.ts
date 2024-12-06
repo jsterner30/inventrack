@@ -1,13 +1,5 @@
 import { ShopifyGraphQLClient } from './shopify-client'
-import { logger } from '../util/logger'
-import {
-  ProductSchema,
-  Product,
-  PageInfo,
-  PageInfoSchema,
-  UpdateInventoryResponse,
-  UpdateInventoryResponseSchema
-} from 'shared'
+import { UpdateInventoryResponse, UpdateInventoryResponseSchema } from 'shared'
 import { isValid } from '../util/validate'
 
 const MAX_VARIANTS_COUNT = 10
@@ -93,6 +85,7 @@ export async function getVariantInventoryLocation (
   }) as { data: Record<string, any>, errors: unknown }
 
   if (errors != null) {
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw errors
   }
 
@@ -122,6 +115,7 @@ export async function getProductInventoryLocation (
   }) as { data: Record<string, any>, errors: unknown }
 
   if (errors != null) {
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw errors
   }
 
@@ -165,6 +159,7 @@ export async function updateAvailableInventory (
   }) as { data: Record<string, unknown>, errors: unknown }
 
   if (errors != null) {
+    // eslint-disable-next-line @typescript-eslint/no-throw-literal
     throw errors
   }
   const response: any = data.inventorySetQuantities

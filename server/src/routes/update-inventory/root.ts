@@ -12,8 +12,7 @@ import {
 // maybe use a generic argument for FastifyPluginAsync if we use options with fastify instance
 const updateInventory: FastifyPluginAsyncTypebox<ServerOptions> = async (fastifyApp, { shopifyClient }): Promise<void> => {
   const fastify = fastifyApp.withTypeProvider<TypeBoxTypeProvider>()
-
-  const fastifyInstance = fastify.post('/', {
+  fastify.post('/', {
     schema: {
       body: UpdateInventoryRequestSchema,
       response: {
@@ -25,24 +24,24 @@ const updateInventory: FastifyPluginAsyncTypebox<ServerOptions> = async (fastify
   }, async (request, reply) => {
     let inventoryPairs: Array<{ inventoryItemId: string, locationId: string }> | null
 
-    if (request.body.variantId) {
+    if (request.body.variantId != null) {
       inventoryPairs = await getVariantInventoryLocation(shopifyClient, request.body.variantId)
-      if (inventoryPairs == null) {
+      if (inventoryPairs === null) {
         throw new NotFoundError('Product variant not found')
       }
-    } else if (request.body.productId) {
+    } else if (request.body.productId != null) {
       inventoryPairs = await getProductInventoryLocation(shopifyClient, request.body.productId)
-      if (inventoryPairs == null) {
+      if (inventoryPairs === null) {
         throw new NotFoundError('Product not found')
       }
     } else {
       throw new InvalidRequestError('Must specify either productId or variantId')
     }
 
-    if (request.body.locationId) {
+    if (request.body.locationId != null) {
       inventoryPairs = inventoryPairs.filter(p => p.locationId === request.body.locationId)
     }
-    if (inventoryPairs.length == 0) {
+    if (inventoryPairs.length === 0) {
       throw new NotFoundError('Inventory Item not found')
     }
     if (inventoryPairs.length > 1) {
@@ -52,7 +51,7 @@ const updateInventory: FastifyPluginAsyncTypebox<ServerOptions> = async (fastify
 
     const response = await updateAvailableInventory(shopifyClient, inventoryPairs[0].inventoryItemId, inventoryPairs[0].locationId, request.body.quantity)
 
-    reply.status(200).send(response)
+    await reply.status(200).send(response)
   })
 }
 

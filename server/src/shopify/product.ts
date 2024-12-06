@@ -90,20 +90,23 @@ const getProductsQuery = /* GraphQL */ `
 `
 
 function parseProduct (product: any): Product {
-  product.totalAvailableInventory = 0
-  product.totalCommittedInventory = 0
+  let totalAvailableInventory: number = 0
+  let totalCommittedInventory: number = 0
 
   for (const variant of product.variants.nodes) {
     for (const inventoryLevel of variant.inventoryItem.inventoryLevels.nodes) {
-      for (const quantity of inventoryLevel.quantities) {
-        if (quantity.name == 'available') {
-          product.totalAvailableInventory += quantity.quantity
-        } else if (quantity.name == 'committed') {
-          product.totalCommittedInventory += quantity.quantity
+      for (const inventoryQuantity of inventoryLevel.quantities) {
+        const quantity: number = inventoryQuantity.quantity
+        if (inventoryQuantity.name === 'available') {
+          totalAvailableInventory += quantity
+        } else if (inventoryQuantity.name === 'committed') {
+          totalCommittedInventory += quantity
         }
       }
     }
   }
+  product.totalAvailableInventory = totalAvailableInventory
+  product.totalCommittedInventory = totalCommittedInventory
   if (!isValid<Product>(ProductSchema, product, 'product')) {
     throw new Error('Error mapping product')
   }
