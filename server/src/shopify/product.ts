@@ -1,13 +1,52 @@
 import { ShopifyGraphQLClient } from './shopify-client'
 import { logger } from '../util/logger'
-import { ProductSchema, Product, PageInfo, PageInfoSchema } from 'shared'
+import {ProductSchema, Product, PageInfo, PageInfoSchema, Inventory} from 'shared'
 import { isValid } from '../util/validate'
-import {getVariantInventory, internalVariantQuery} from "./productVariant";
+
+const MAX_VARIANTS_COUNT = 10;
+const MAX_LOCATIONS_COUNT = 5;
+
+export const internalVariantQuery = /* GraphQL */ `
+id
+title
+image {
+    id
+    url
+}
+sku
+displayName
+image {
+    url
+    id
+}
+contextualPricing(context: {}) {
+    price {
+        amount
+        currencyCode
+    }
+}
+inventoryQuantity
+inventoryItem {
+    inventoryLevels(first: ${MAX_LOCATIONS_COUNT}) {
+        nodes {
+            id
+            location {
+                id
+                name
+            }
+            quantities(names: ["available", "committed"]) {
+                name
+                quantity
+            }
+        }
+    }
+}
+`
 
 const internalProductQuery = /* GraphQL */ `
 id
 handle
-variants(first: 100) {
+variants(first: ${MAX_VARIANTS_COUNT}) {
   nodes {
     ${internalVariantQuery}
   }
@@ -49,10 +88,34 @@ const getProductsQuery = /* GraphQL */ `
   }
 `
 
-async function parseProduct(product: any, client: ShopifyGraphQLClient): Promise<Product> {
-  for (const variant of product.variants.nodes) {
-    variant.inventory = await getVariantInventory(client, variant.id, variant.inventoryItem.locationsCount.count) // TODO: Reduce API calls
+function parseProduct(product: any): Product {
+  let productInventory: Inventory = {
+    totalInventory: product.totalInventory,
+    totalAvailableInventory: 0,
+    totalCommittedInventory: 0
   }
+
+  for (const variant of product.variants.nodes) {
+    let variantInventory: Inventory = {
+      totalInventory: variant.inventoryQuantity,
+      totalAvailableInventory: 0,
+      totalCommittedInventory: 0
+    }
+
+    for (const inventoryLevel of variant.inventoryItem.inventoryLevels.nodes) {
+      for (const quantity of inventoryLevel.quantities) {
+        if (quantity.name == "available") {
+          variantInventory.totalAvailableInventory += quantity.quantity;
+          productInventory.totalAvailableInventory += quantity.quantity;
+        } else if (quantity.name == "committed") {
+          variantInventory.totalCommittedInventory += quantity.quantity;
+          productInventory.totalCommittedInventory += quantity.quantity;
+        }
+      }
+    }
+    variant.inventory = variantInventory;
+  }
+  product.inventory = productInventory;
   if (!isValid<Product>(ProductSchema, product, 'product')) {
     throw new Error('Error mapping product')
   }
@@ -77,7 +140,7 @@ export async function getProductById (
     return null
   }
 
-  return await parseProduct(data.product, client)
+  return parseProduct(data.product)
 }
 
 export async function getProducts (
@@ -104,7 +167,7 @@ export async function getProducts (
 
   const products: Product[] = []
   for (const edge of data.products.edges) {
-    products.push(await parseProduct(edge.node, client))
+    products.push(await parseProduct(edge.node))
   }
   const pageInfo = data.products.pageInfo
   if (!isValid<PageInfo>(PageInfoSchema, pageInfo, 'page info')) {

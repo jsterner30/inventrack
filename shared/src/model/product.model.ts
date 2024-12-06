@@ -2,6 +2,7 @@ import { Static, Type } from '@fastify/type-provider-typebox'
 import { ImageObjSchema } from './image.model'
 import { VariantSchema } from './variant.model'
 import { PageInfoSchema } from './response.model'
+import {InventorySchema} from "./inventory.model";
 
 export const ProductSchema = Type.Object({
   id: Type.String(),
@@ -13,7 +14,8 @@ export const ProductSchema = Type.Object({
   variants: Type.Object({
     nodes: Type.Array(VariantSchema)
   }),
-  totalInventory: Type.Integer()
+  totalInventory: Type.Integer(),
+  inventory: InventorySchema
 })
 export type Product = Static<typeof ProductSchema>
 

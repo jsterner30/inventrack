@@ -1,11 +1,8 @@
 import {Static, Type} from "@fastify/type-provider-typebox";
 
-export const VariantInventorySchema = Type.Object({
+export const InventorySchema = Type.Object({
     totalInventory: Type.Integer(),
     totalCommittedInventory: Type.Integer(),
-    totalAvailableInventory: Type.Integer(),
-    inventoryItem: Type.Object({
-        inventoryLevels: Type.Null() // TODO
-    })
+    totalAvailableInventory: Type.Integer()
 })
-export type VariantInventory = Static<typeof VariantInventorySchema>
+export type Inventory = Static<typeof InventorySchema>
