@@ -1,7 +1,7 @@
 import { Static, Type } from '@fastify/type-provider-typebox'
 import { ImageObjSchema } from './image.model'
 import { Nullable } from './misc'
-import {InventorySchema} from "./inventory.model";
+import { VariantInventoryItemSchema } from './inventory.model'
 
 export const VariantSchema = Type.Object({
   id: Type.String(),
@@ -14,7 +14,6 @@ export const VariantSchema = Type.Object({
     })
   }),
   sku: Nullable(Type.String()),
-  inventory: InventorySchema
+  inventoryItem: VariantInventoryItemSchema
 })
 export type Variant = Static<typeof VariantSchema>
-
