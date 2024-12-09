@@ -13,7 +13,9 @@ export const ProductSchema = Type.Object({
   variants: Type.Object({
     nodes: Type.Array(VariantSchema)
   }),
-  totalInventory: Type.Integer()
+  totalInventory: Type.Integer(),
+  totalAvailableInventory: Type.Integer(),
+  totalCommittedInventory: Type.Integer()
 })
 export type Product = Static<typeof ProductSchema>
 

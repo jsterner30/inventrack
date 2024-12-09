@@ -3,22 +3,53 @@ import { logger } from '../util/logger'
 import { ProductSchema, Product, PageInfo, PageInfoSchema } from 'shared'
 import { isValid } from '../util/validate'
 
+const MAX_VARIANTS_COUNT = 10
+const MAX_LOCATIONS_COUNT = 5
+
+export const internalVariantQuery = /* GraphQL */ `
+id
+title
+image {
+    id
+    url
+}
+sku
+displayName
+image {
+    url
+    id
+}
+contextualPricing(context: {}) {
+    price {
+        amount
+        currencyCode
+    }
+}
+inventoryQuantity
+inventoryItem {
+    id
+    inventoryLevels(first: ${MAX_LOCATIONS_COUNT}) {
+        nodes {
+            id
+            location {
+                id
+                name
+            }
+            quantities(names: ["available", "committed"]) {
+                name
+                quantity
+            }
+        }
+    }
+}
+`
+
 const internalProductQuery = /* GraphQL */ `
 id
 handle
-variants(first: 100) {
+variants(first: ${MAX_VARIANTS_COUNT}) {
   nodes {
-    id
-    title
-    image {
-      url
-    }
-    contextualPricing(context: {}) {
-      price {
-        amount
-        currencyCode
-      }
-    }
+    ${internalVariantQuery}
   }
 }
 title
@@ -58,6 +89,30 @@ const getProductsQuery = /* GraphQL */ `
   }
 `
 
+function parseProduct (product: any): Product {
+  let totalAvailableInventory: number = 0
+  let totalCommittedInventory: number = 0
+
+  for (const variant of product.variants.nodes) {
+    for (const inventoryLevel of variant.inventoryItem.inventoryLevels.nodes) {
+      for (const inventoryQuantity of inventoryLevel.quantities) {
+        const quantity: number = inventoryQuantity.quantity
+        if (inventoryQuantity.name === 'available') {
+          totalAvailableInventory += quantity
+        } else if (inventoryQuantity.name === 'committed') {
+          totalCommittedInventory += quantity
+        }
+      }
+    }
+  }
+  product.totalAvailableInventory = totalAvailableInventory
+  product.totalCommittedInventory = totalCommittedInventory
+  if (!isValid<Product>(ProductSchema, product, 'product')) {
+    throw new Error('Error mapping product')
+  }
+  return product
+}
+
 export async function getProductById (
   client: ShopifyGraphQLClient,
   id: string
@@ -76,11 +131,7 @@ export async function getProductById (
     return null
   }
 
-  const product: unknown = data.product
-  if (!isValid<Product>(ProductSchema, product, 'product')) {
-    return null
-  }
-  return product
+  return parseProduct(data.product)
 }
 
 export async function getProducts (
@@ -107,11 +158,7 @@ export async function getProducts (
 
   const products: Product[] = []
   for (const edge of data.products.edges) {
-    const product = edge.node
-    if (!isValid<Product>(ProductSchema, product, 'product')) {
-      throw new Error('Error mapping product')
-    }
-    products.push(product)
+    products.push(parseProduct(edge.node))
   }
   const pageInfo = data.products.pageInfo
   if (!isValid<PageInfo>(PageInfoSchema, pageInfo, 'page info')) {

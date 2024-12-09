@@ -18,7 +18,7 @@ export function isValid<T> (schema: TSchema, data: unknown, descriptorMsg?: stri
   if (validator.Check(data)) {
     return true
   }
-  const errors = [...validator.Errors(data)].map(err => `\n\t${err.message} but received ${String(err.value)}`)
+  const errors = [...validator.Errors(data)].map(err => `\n\t${err.message} but received ${String(err.value)} at ${err.path}`)
   logger.warn(`Errors when validating that ${descriptorMsg ?? 'data'} is of type ${schema.$id != null ? 'type ' + schema.$id : 'correct type'}:`, errors)
   return false
 }
