@@ -30,9 +30,11 @@
     0% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(10px);
     }
+
     100% {
         transform: translateY(0px);
     }
@@ -45,7 +47,7 @@ header {
     justify-content: space-between;
     height: fit-content;
     /* 20px top, 16px right, 40px bottom, 16px left */
-    padding: 20px 16px 40px 16px; 
+    padding: 20px 16px 40px 16px;
     /* Background is picoCSS sand to match the theme */
     background-color: #6F7887;
 
@@ -64,7 +66,8 @@ header {
 }
 
 .clickableRow:hover td {
-    background-color: #2A3140; /* Soft orange-beige background */
+    background-color: #2A3140;
+    /* Soft orange-beige background */
     transition: background-color 0.2s ease, border 0.2s ease;
     cursor: pointer;
 }
@@ -122,9 +125,9 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  .modal-content {
+}
+
+.modal-content {
     background-color: #202632;
     padding: 20px;
     border-radius: 8px;
@@ -134,35 +137,34 @@ header {
     flex-direction: column;
     gap: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-  }
-  
-  /* h2 {
+}
+
+/* h2 {
     margin: 0;
     font-size: 1.5rem;
   } */
-  
-  .modal-body {
+
+.modal-body {
     display: flex;
     gap: 20px;
-  }
-  
-  .product-image {
+}
+
+.product-image {
     width: 120px;
     height: 120px;
     object-fit: cover;
     border-radius: 8px;
-  }
-  
-  .product-details {
+}
+
+.product-details {
     flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 10px;
-  }
-  
-  .edit-inventory-container {
+}
+
+.edit-inventory-container {
     display: flex;
     align-items: center;
-    gap
-    }  
+}

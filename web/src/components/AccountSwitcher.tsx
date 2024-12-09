@@ -14,7 +14,7 @@ export const AccountSwitcher: React.FC<Props> = ({ companyName, avatarUrl }) => 
         className='rounded-circle me-2'
         style={{ width: '45px', height: '45px' }}
       />
-      <div style={{ padding: '10px', color: 'black', background: '#B3B9C5', borderRadius: '8px', height: '45px', marginLeft: "10px"}}>{companyName}</div>
+      <div style={{ padding: '10px', color: 'black', background: '#B3B9C5', borderRadius: '8px', height: '45px', marginLeft: '10px' }}>{companyName}</div>
     </div>
   )
 }
