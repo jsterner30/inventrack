@@ -111,7 +111,7 @@ export async function getProductInventoryLocation (
   productId: string
 ): Promise<InventoryLocation[] | null> {
   const { data, errors } = await client.request(getProductLocationsQuery, {
-    id: productId
+    id: `gid://shopify/Product/${productId}`
   }) as { data: Record<string, any>, errors: unknown }
 
   if (errors != null) {
