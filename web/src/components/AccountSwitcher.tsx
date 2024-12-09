@@ -7,14 +7,14 @@ interface Props {
 
 export const AccountSwitcher: React.FC<Props> = ({ companyName, avatarUrl }) => {
   return (
-    <div style={{ background: '#BEB8A7', borderRadius: '8px' }}>
+    <div style={{ display: 'flex', alignItems: 'center', width: 'fit-content' }}>
       <img
         src={avatarUrl}
         alt='Company Avatar'
         className='rounded-circle me-2'
         style={{ width: '45px', height: '45px' }}
       />
-      <span style={{ padding: '5px' }}>{companyName}</span>
+      <div style={{ padding: '10px', color: 'black', background: '#B3B9C5', borderRadius: '8px', height: '45px', marginLeft: "10px"}}>{companyName}</div>
     </div>
   )
 }

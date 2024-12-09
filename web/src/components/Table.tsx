@@ -79,7 +79,7 @@ export const Table: React.FC<Props> = ({ items, onRowClick }) => {
   })
 
   return (
-    <div className='p-2'>
+    <div className='p-2' style={{paddingRight:'20px', paddingLeft:'20px'}}>
       <table>
         <thead>
           {table.getHeaderGroups().map(headerGroup => (

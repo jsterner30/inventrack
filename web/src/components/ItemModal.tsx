@@ -56,36 +56,39 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose }) =
   }
 
   return (
-    <div className='modal-overlay'>
-      <div className='modal-content'>
-        <h2>{item.productName}</h2>
-        <img src={item.imageUrl} alt={item.productName} />
+    <div className="modal-overlay">
+  <div className="modal-content">
+    <h2>{item.productName}</h2>
+    <div className="modal-body">
+      <img className="product-image" src={item.imageUrl} alt={item.productName} />
+      <div className="product-details">
         <p>SKU: {item.sku}</p>
-        <div className='inventory-edit-section'>
+        <div className="edit-inventory-container">
           <label>Total Inventory:</label>
-          {isEditing
-            ? (
-              <div className='edit-inventory-container' style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <button onClick={handleDecrement}>-{interval}</button>
-                <input
-                  type='number'
-                  value={inventory}
-                  onChange={(e) => setInventory(Number(e.target.value))}
-                  style={{ textAlign: 'center', width: '100px' }}
-                />
-                <button onClick={handleIncrement}>+{interval}</button>
-                <button onClick={handleSave}>Save</button>
-              </div>
-              )
-            : (
-              <span>
-                {inventory} <FaPencilAlt className='edit-icon' onClick={handleEditClick} />
-              </span>
-              )}
+          {isEditing ? (
+            <div className="inventory-editor">
+              <button onClick={handleDecrement}>-{interval}</button>
+              <input style={{ paddingRight: '5px' }}
+                type="number"
+                value={inventory}
+                onChange={(e) => setInventory(Number(e.target.value))}
+              />
+              <button onClick={handleIncrement}>+{interval}</button>
+              <button onClick={handleSave}>Save</button>
+            </div>
+          ) : (
+            <span>
+              {inventory} <FaPencilAlt className="edit-icon" onClick={handleEditClick} />
+            </span>
+          )}
         </div>
-        <br />
-        <button onClick={onClose}>Close</button>
       </div>
     </div>
+    <button className="close-button" onClick={onClose}>
+      Close
+    </button>
+  </div>
+</div>
+
   )
 }

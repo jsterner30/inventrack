@@ -47,7 +47,7 @@ header {
     /* 20px top, 16px right, 40px bottom, 16px left */
     padding: 20px 16px 40px 16px; 
     /* Background is picoCSS sand to match the theme */
-    background-color: #CCC6B4;
+    background-color: #6F7887;
 
     /* Use if you turn off light-mode only settings */
     /* @media (prefers-color-scheme: dark) {
@@ -64,7 +64,7 @@ header {
 }
 
 .clickableRow:hover td {
-    background-color: #fff4e6; /* Soft orange-beige background */
+    background-color: #2A3140; /* Soft orange-beige background */
     transition: background-color 0.2s ease, border 0.2s ease;
     cursor: pointer;
 }
@@ -85,14 +85,84 @@ header {
     align-items: center;
 }
 
-.modal-content {
-    background-color: white;
+
+
+/* .modal-content {
+    background-color: #202632;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    align-content: center;
+    width: 'fit-content';
     padding: 20px;
     border-radius: 5px;
     max-width: 500px;
     width: 100%;
+} */
+/* .modal-content {
+    background-color: #202632;
+    padding: 20px;
+    border-radius: 5px;
+    max-width: 620px;
+    width: fit-content;
 }
 
 .modal-content img {
     max-width: 50%;
-}
+} */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content {
+    background-color: #202632;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+  }
+  
+  /* h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  } */
+  
+  .modal-body {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .product-image {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .product-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .edit-inventory-container {
+    display: flex;
+    align-items: center;
+    gap
+    }  
