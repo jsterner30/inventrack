@@ -19,6 +19,7 @@ export const VariantInventoryItemSchema = Type.Object({
 export type VariantInventoryItem = Static<typeof VariantInventoryItemSchema>
 
 export const UpdateInventoryRequestSchema = Type.Object({
+  // This productId is in the form of a raw number(as a string) like 7507889357006, not wrapped in a shopify gid url
   productId: Type.Optional(Type.String()),
   variantId: Type.Optional(Type.String()),
   locationId: Type.Optional(Type.String()),

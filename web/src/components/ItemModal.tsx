@@ -1,6 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { InventoryItem } from '../util/types'
 import { FaPencilAlt } from 'react-icons/fa'
+import { useTriggerLoad } from '../util/load'
+import { ClientContext } from '../context/client-context'
+import { updateInventory } from '../client/update-inventory'
 
 interface ItemModalProps {
   item: InventoryItem | null
@@ -12,8 +15,18 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose }) =
   const interval: number = 10 // Edit this to change the interval of increment and decrement for the inventory and buttons that display it.
   const [isEditing, setIsEditing] = useState(false)
   const [inventory, setInventory] = useState<number>(item?.totalInventory ?? 0)
+  const [wasEdited, setWasEdited] = useState<boolean>(false)
+  const client = useContext(ClientContext)
+  const [saveInventoryState, doSaveInventory] = useTriggerLoad(async (abort) => {
+    if (client == null || item == null) {
+      return
+    }
+    const requestBody = { productId: item.sku, quantity: inventory }
+    await updateInventory(client, requestBody)
+    setIsEditing(false)
+    setWasEdited(true)
+  })
   useEffect(() => {
-    console.log(item)
     if ((item != null) && typeof item.totalInventory === 'number') {
       setInventory(item.totalInventory) // Update inventory when item changes
     }
@@ -22,7 +35,7 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose }) =
     // Function to close modal when you hit 'Esc'
     const handleKeyDown = (event: KeyboardEvent): void => {
       if (isOpen && event.key === 'Escape') {
-        onClose() // Call the onClose callback if Escape is pressed
+        close(onClose) // Call the onClose callback if Escape is pressed
       }
     }
 
@@ -49,10 +62,12 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose }) =
     setInventory(prev => (prev - interval >= 0 ? prev - interval : 0)) // Ensure inventory doesn't go below 0
   }
 
-  const handleSave = (): void => {
-    setIsEditing(false)
-    alert(`Save complete. New inventory: ${inventory}`)
-    // You can add your API call here later
+  const close = (onClose: () => void): void => {
+    onClose()
+    // Refresh the page if any data was edited
+    if (wasEdited) {
+      window.location.reload()
+    }
   }
 
   return (
@@ -76,7 +91,17 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose }) =
                       onChange={(e) => setInventory(Number(e.target.value))}
                     />
                     <button onClick={handleIncrement}>+{interval}</button>
-                    <button onClick={handleSave}>Save</button>
+                    {saveInventoryState.pending
+                      ? (
+                        <div>Saving...</div>
+                        )
+                      : (
+                        <button onClick={() => {
+                          doSaveInventory()
+                        }}
+                        >Save
+                        </button>
+                        )}
                   </div>
                   )
                 : (
@@ -87,11 +112,10 @@ export const ItemModal: React.FC<ItemModalProps> = ({ item, isOpen, onClose }) =
             </div>
           </div>
         </div>
-        <button className='close-button' onClick={onClose}>
+        <button className='close-button' onClick={() => close(onClose)}>
           Close
         </button>
       </div>
     </div>
-
   )
 }
